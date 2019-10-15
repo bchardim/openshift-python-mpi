@@ -1,5 +1,8 @@
 # openshift-python-mpi
 
+## References
+https://github.com/itewk/openshift-mpi-example
+
 ## OpenShift
 Instructions for setting this up on OpenShift
 
