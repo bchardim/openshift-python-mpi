@@ -1,0 +1,119 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: mpi-example
+  annotations:
+    iconClass: icon-python
+    tags: instant-app,mpi
+labels:
+  template: mpi-example
+objects:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: mpi
+    name: mpi-base
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: mpi-base
+    name: mpi-base
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: mpi-base:latest
+    runPolicy: Serial
+    source:
+      contextDir: /openshift
+      git:
+        uri: "${MPI_BASE_IMAGE_URI}"
+        ref: "${MPI_BASE_IMAGE_REF}"
+      type: Git
+    strategy:
+      dockerStrategy:
+        dockerfilePath: Dockerfile.rhel7
+      type: Docker
+    triggers:
+    - type: ConfigChange
+    successfulBuildsHistoryLimit: 5
+    failedBuildsHistoryLimit: 5
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: mpi
+    name: mpi
+  spec:
+    replicas: 3
+    selector:
+      app: mpi
+      deploymentconfig: mpi
+    template:
+      metadata:
+        labels:
+          app: mpi
+          deploymentconfig: mpi
+      spec:
+        containers:
+        - name: mpi
+          image: 'mpi-base'
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 2022
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 1Gi
+            requests:
+              cpu: '1'
+              memory: 512Mi
+          volumeMounts:
+          - mountPath: /etc/ssh/sds
+            name: sds-ssh
+        volumes:
+        - name: sds-ssh
+          projected:
+            defaultMode: 0600
+            sources:
+            - secret:
+                name: sds-identity
+                items:
+                - key: ssh-privatekey
+                  mode: 0600
+                  path: sds_identity
+                - key: ssh-publickey
+                  mode: 384
+                  path: sds_identity.pub
+            - configMap:
+                name: sds-ssh-config
+                items:
+                - key: ssh-authorized-keys
+                  mode: 0600
+                  path: authorized_keys
+                - key: ssh-config
+                  mode: 0600
+                  path: config
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - mpi
+        from:
+          kind: ImageStreamTag
+          name: 'mpi-base:latest'
+      type: ImageChange
+parameters:
+- name: MPI_BASE_IMAGE_URI
+  description: URI to the git project contianing the saml-service-provider image definintion
+- name: MPI_BASE_IMAGE_REF
+  description: Git ref contianing the saml-service-provider image definintion
+  value: master

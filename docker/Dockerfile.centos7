@@ -1,0 +1,63 @@
+# vi: ft=Dockerfile
+FROM centos:7
+
+USER root
+
+RUN yum -y install epel-release && \
+    yum -y upgrade && \
+    yum -y install centos-release-scl && \
+    yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+    yum -y install rh-python36 rh-python36-python-devel rh-python36-python-setuptools-36 && \
+    yum -y install rh-git29 ed && \
+    yum -y install openssh openssh-server openssh-clients openssl-libs && \
+    yum clean all && \
+    yum -y groupinstall "Development Tools" && \
+    yum clean all
+
+# install open-mpi from source
+RUN  mkdir /tmp/git && cd /tmp/git && \
+    git clone https://github.com/open-mpi/ompi.git && \
+    cd ompi && \
+    git checkout v4.0.0 && \
+    ./autogen.pl && \
+    ./configure --prefix=/usr/local && \
+    make -j 16 && \
+    make install && \
+    /usr/local/bin/mpicc examples/ring_c.c -o /usr/bin/mpi_ring && \
+    rm -rf /tmp/git
+
+# pip etc
+RUN source scl_source enable rh-python36 && \
+    pip3 --no-cache-dir install --upgrade pip setuptools==39.1.0 wheel && \
+    pip3 --no-cache-dir install --upgrade mpi4py
+
+
+RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config && \
+    sed -i 's/#Port.*$/Port 2022/' /etc/ssh/sshd_config && \
+    chmod 775 /var/run && \
+    chmod 775 /etc/ssh && \
+    chmod 660 /etc/ssh/sshd_config && \
+    chmod 664 /etc/passwd /etc/group && \
+    touch /etc/ssh/ssh_host_rsa_key && \
+    touch /etc/ssh/ssh_host_dsa_key  && \
+    touch /etc/ssh/ssh_host_ed25519_key && \
+    touch /etc/ssh/ssh_host_ecdsa_key && \
+    adduser --system -s /bin/bash --create-home -u 10001 -g 0 sds && \
+    cat /etc/passwd
+
+COPY docker-entrypoint.sh  /docker-entrypoint.sh
+
+RUN chmod 750 /docker-entrypoint.sh && \
+    source scl_source enable rh-python36 && \
+    python --version && \
+    pip install --upgrade pip && \
+    pip install setuptools
+
+COPY etc/profile.d/ /etc/profile.d/
+
+USER 10001
+WORKDIR /home/sds
+COPY --chown=sds:root src/ src/
+EXPOSE 2022
+
+CMD [ "/docker-entrypoint.sh"]
