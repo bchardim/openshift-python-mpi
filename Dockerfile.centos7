@@ -45,9 +45,9 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     adduser --system -s /bin/bash --create-home -u 10001 -g 0 sds && \
     cat /etc/passwd
 
-COPY docker-entrypoint.sh  /docker-entrypoint.sh
+COPY scripts/entrypoint.sh  /entrypoint.sh
 
-RUN chmod 750 /docker-entrypoint.sh && \
+RUN chmod 750 /entrypoint.sh && \
     source scl_source enable rh-python36 && \
     python --version && \
     pip install --upgrade pip && \
@@ -60,4 +60,4 @@ WORKDIR /home/sds
 COPY --chown=sds:root src/ src/
 EXPOSE 2022
 
-CMD [ "/docker-entrypoint.sh"]
+CMD [ "/entrypoint.sh"]

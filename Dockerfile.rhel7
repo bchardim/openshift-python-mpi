@@ -55,4 +55,4 @@ RUN chmod 750 /scripts/* && \
 USER sds
 EXPOSE 2022
 
-CMD [ "/scripts/docker-entrypoint.sh"]
+CMD [ "/scripts/entrypoint.sh"]

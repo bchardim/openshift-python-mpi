@@ -31,7 +31,7 @@ objects:
         name: mpi-base:latest
     runPolicy: Serial
     source:
-      contextDir: /openshift
+      contextDir: /
       git:
         uri: "${MPI_BASE_IMAGE_URI}"
         ref: "${MPI_BASE_IMAGE_REF}"
