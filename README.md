@@ -6,36 +6,22 @@ https://github.com/itewk/openshift-mpi-example
 ## OpenShift
 Instructions for setting this up on OpenShift
 
-### Set needed environment variables
-```bash
-project_name=mpi-example
-mpi_base_image_uri=
-```
-
-| variable              | description
-|-----------------------|------------
-| project\_name         | name of the project to generate
-| mpi\_base\_image\_uri | url to where this project is stored
-
-
 ### Set up the project
 
 Get the project
 ```bash
-git clone ${mpi_base_image_uri}
+git clone https://github.com/bchardim/openshift-python-mpi
 cd openshift-python-mpi
 ```
-
-Create the OpenShift project and intitial resources
-```bash
-oc new-project ${project_name}
-oc process -f openshift/mpi-template.yml -p MPI_BASE_IMAGE_URI=${mpi_base_image_uri} | oc create -f -
-```
-
 Create the SSH information
 ```bash
-./generate-ssh-configs.sh
-./openshift/create-config-maps-and-secrets.sh
+bash generate-ssh-configs.sh
+bash create-config-maps-and-secrets.sh
+```
+Create the OpenShift project and intitial resources
+```bash
+oc new-project gw-learning
+oc process -f mpi-template.yml -p MPI_BASE_IMAGE_URI=https://github.com/bchardim/openshift-python-mpi | oc create -f -
 ```
 
 ### Run MPI Job
@@ -49,8 +35,3 @@ oc wait dc mpi --for condition=available
 
 oc scale dc mpi --replicas 0
 ```
-
-## Docker-compose
-Instrucitons for setting this up on docker-compose.
-
-**WARNING**: with all of the refactor for OpenShift the docker-compose use case is currently broken and will need to be updated to work with the new way of doing things. IE, dyanmically generating host key files, new directory structure, dynamically uplading scripts to containers, etc.
