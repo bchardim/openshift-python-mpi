@@ -43,4 +43,5 @@ chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
 
 echo "start sshd"
+sleep 4000
 exec /usr/sbin/sshd -D
