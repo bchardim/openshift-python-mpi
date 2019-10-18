@@ -9,9 +9,9 @@ echo -e ",s/10001/`id -u`/g\\012 w" | ed -s /etc/passwd
 # now start setting up resources needed by sds user
 
 # sds user ~/.ssh
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/*
+###mkdir -p ~/.ssh
+###chmod 700 ~/.ssh
+###chmod 600 ~/.ssh/*
 
 # finally start sshd
-exec /usr/sbin/sshd -D
+###exec /usr/sbin/sshd -D
