@@ -1,8 +1,5 @@
 # openshift-python-mpi
 
-## References
-https://github.com/itewk/openshift-mpi-example
-
 ## OpenShift
 Instructions for setting this up on OpenShift
 
@@ -31,7 +28,13 @@ Run a sample job against 10 pods
 oc scale dc mpi --replicas 10
 oc wait dc mpi --for condition=available
 
-./openshift/run-mpi-script-against-ocp-mpi-pods.sh sample-scripts/mpi-hello-world.py
+./scripts/run-mpi-script-against-ocp-mpi-pods.sh scripts/mpi-hello-world.py
 
 oc scale dc mpi --replicas 0
 ```
+
+
+## References
+https://github.com/itewk/openshift-mpi-example
+
+
