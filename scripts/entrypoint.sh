@@ -9,9 +9,9 @@
 # now start setting up resources needed by sds user
 
 # sds user ~/.ssh
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/*
+mkdir -p /home/sds/.ssh
+chmod 700 /home/sds/.ssh
+chmod 600 /home/sds/.ssh/*
 
 # finally start sshd
 exec /usr/sbin/sshd -D
