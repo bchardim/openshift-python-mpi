@@ -4,15 +4,14 @@
 # in this case its the USER sds, which will be in the root group,
 # however the id is not known until runtime
 # so update the sds user's id to match the runtime user id
-echo -e ",s/10001/`id -u`/g\\012 w" | ed -s /etc/passwd
+#echo -e ",s/10001/`id -u`/g\\012 w" | ed -s /etc/passwd
 
 # now start setting up resources needed by sds user
 
 # sds user ~/.ssh
-###mkdir -p ~/.ssh
-###chmod 700 ~/.ssh
-###chmod 600 ~/.ssh/*
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/*
 
 # finally start sshd
-###exec /usr/sbin/sshd -D
-sleep 3600
+exec /usr/sbin/sshd -D
