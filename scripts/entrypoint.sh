@@ -15,3 +15,4 @@ echo -e ",s/10001/`id -u`/g\\012 w" | ed -s /etc/passwd
 
 # finally start sshd
 ###exec /usr/sbin/sshd -D
+sleep 3600
