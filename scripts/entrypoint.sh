@@ -17,12 +17,12 @@ cat /etc/passwd | sed "s/^sds:x:`echo ${default_sds_uid}`.*/sds:x:`echo ${actual
 echo "Create home directory"
 mkdir -p "${sds_home_dir}"
 
-echo "Generate the container specfic host keys for sshd"
-ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
-ssh-keygen -q -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''
-ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
-ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
-chmod 600 /etc/ssh/ssh_*key
+#echo "Generate the container specfic host keys for sshd"
+#ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
+#ssh-keygen -q -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''
+#ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
+#ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+#chmod 600 /etc/ssh/ssh_*key
 
 echo "Ensure the .ssh directory exists"
 mkdir -p "${sds_home_dir}/.ssh"
