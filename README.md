@@ -12,8 +12,8 @@ cd openshift-python-mpi
 ```
 Create the SSH information
 ```bash
-bash generate-ssh-configs.sh
-bash create-config-maps-and-secrets.sh
+bash scripts/generate-ssh-configs.sh
+bash scripts/create-config-maps-and-secrets.sh
 ```
 Create the OpenShift project and intitial resources
 ```bash
@@ -28,7 +28,8 @@ Run a sample job against 10 pods
 oc scale dc mpi --replicas 10
 oc wait dc mpi --for condition=available
 
-./scripts/run-mpi-script-against-ocp-mpi-pods.sh scripts/mpi-hello-world.py
+cd scripts
+./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
 
 oc scale dc mpi --replicas 0
 ```
