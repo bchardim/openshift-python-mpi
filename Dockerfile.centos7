@@ -37,18 +37,7 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 775 /var/run && \
     chmod 775 /etc/ssh && \
     chmod 660 /etc/ssh/sshd_config && \
-    #systemctl enable sshd && \
     chmod 664 /etc/passwd /etc/group && \
-    #touch /etc/ssh/ssh_host_rsa_key && \
-    #touch /etc/ssh/ssh_host_dsa_key  && \
-    #touch /etc/ssh/ssh_host_ed25519_key && \
-    #touch /etc/ssh/ssh_host_ecdsa_key && \
-    #ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' && \
-    #ssh-keygen -q -t dsa -f /etc/ssh/ssh_host_dsa_key -N '' && \
-    #ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N '' && \
-    #ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N '' && \
-    #chmod 600 /etc/ssh/ssh_*key && \
-    ###adduser --system -s /bin/bash --create-home -g 0 sds && \
     adduser --system -s /bin/bash -u 10001 -g 0 sds && \
     chmod 775 /home && \
     cat /etc/passwd
