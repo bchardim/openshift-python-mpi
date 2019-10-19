@@ -29,7 +29,9 @@ RUN  mkdir /tmp/git && cd /tmp/git && \
 # pip etc
 RUN source scl_source enable rh-python36 && \
     pip3 --no-cache-dir install --upgrade pip setuptools==39.1.0 wheel && \
-    pip3 --no-cache-dir install --upgrade mpi4py
+    pip3 --no-cache-dir install --upgrade mpi4py && \
+    pip3 --no-cache-dir install --upgrade numpy && \
+    pip3 --no-cache-dir install --upgrade scipy 
 
 
 RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config && \
