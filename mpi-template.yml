@@ -2,12 +2,12 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: python-mpi
+  name: mpi-example
   annotations:
     iconClass: icon-python
     tags: instant-app,mpi
 labels:
-  template: python-mpi
+  template: mpi-example
 objects:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
@@ -101,6 +101,16 @@ objects:
                 - key: ssh-config
                   mode: 0600
                   path: config
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - mpi
+        from:
+          kind: ImageStreamTag
+          name: 'mpi-base:latest'
+      type: ImageChange
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -163,7 +173,7 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - mpi
+        - mpi-master
         from:
           kind: ImageStreamTag
           name: 'mpi-base:latest'
