@@ -2,12 +2,12 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: mpi-example
+  name: python-mpi
   annotations:
     iconClass: icon-python
     tags: instant-app,mpi
 labels:
-  template: mpi-example
+  template: python-mpi
 objects:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
@@ -75,6 +75,63 @@ objects:
             requests:
               cpu: '1'
               memory: 512Mi
+          volumeMounts:
+          - mountPath: /etc/ssh/sds
+            name: sds-ssh
+        volumes:
+        - name: sds-ssh
+          projected:
+            defaultMode: 0600
+            sources:
+            - secret:
+                name: sds-identity
+                items:
+                - key: ssh-privatekey
+                  mode: 0600
+                  path: sds_identity
+                - key: ssh-publickey
+                  mode: 384
+                  path: sds_identity.pub
+            - configMap:
+                name: sds-ssh-config
+                items:
+                - key: ssh-authorized-keys
+                  mode: 0600
+                  path: authorized_keys
+                - key: ssh-config
+                  mode: 0600
+                  path: config
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: mpi-master
+    name: mpi-master
+  spec:
+    replicas: 1
+    selector:
+      app: mpi-master
+      deploymentconfig: mpi-master
+    template:
+      metadata:
+        labels:
+          app: mpi-master
+          deploymentconfig: mpi-master
+      spec:
+        containers:
+        - name: mpi-master
+          image: 'mpi-base'
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 2022
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 5Gi
+            requests:
+              cpu: '1'
+              memory: 4096Mi
           volumeMounts:
           - mountPath: /etc/ssh/sds
             name: sds-ssh
