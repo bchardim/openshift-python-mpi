@@ -40,5 +40,5 @@ echo ""
 
 echo
 echo "Run mpi script"
-echo "oc rsh ${mpi_pod_head} mpirun -np ${mpi_pods_count} -H ${mpi_host_list} scl enable rh-python36 ${mpi_scripts_dir}/$1"
-oc rsh ${mpi_pod_head} mpirun -np ${mpi_pods_count} -H ${mpi_host_list} scl enable rh-python36 ${mpi_scripts_dir}/$1
+echo "oc rsh ${mpi_pod_head} mpirun -np ${mpi_pods_count} -H ${mpi_host_list} scl enable rh-python36 \"bash -c '${mpi_scripts_dir}/$1 $2 $3'\""
+oc rsh ${mpi_pod_head} mpirun -np ${mpi_pods_count} -H ${mpi_host_list} scl enable rh-python36 "bash -c '${mpi_scripts_dir}/$1 $2 $3'"

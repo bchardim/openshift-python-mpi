@@ -33,14 +33,10 @@ myrank = comm.Get_rank() # Get the rank of the process
 
 # Number of iterations must be multiple of nproc
 n = int(sys.argv[1])
-n = 8000
-print ("XXX %s XXX" %nprocs)
-sys.exit()
 
 if (myrank == 0):
-    if (n % nprocs) <> 0:
-        print "Error - number of calculations must be a multiple of nproc"
-        print "Exiting ..."
+    if (n % nprocs != 0):
+        print ("ERROR - number of calculations must be a multiple of nproc")
         comm.Abort()
 
 # Create sample array with random x,y points for montecarlo calculation
