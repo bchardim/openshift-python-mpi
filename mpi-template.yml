@@ -138,10 +138,10 @@ objects:
           resources:
             limits:
               cpu: '2'
-              memory: 5Gi
+              memory: 9Gi
             requests:
-              cpu: '1'
-              memory: 4096Mi
+              cpu: '2'
+              memory: 8192Mi
           volumeMounts:
           - mountPath: /etc/ssh/sds
             name: sds-ssh
