@@ -10,7 +10,6 @@ echo ""
 app_name=mpi
 mpi_pods=`oc get pod -l app=${app_name} -o wide`
 mpi_pods_master=`oc get pod -l app=${app_name}-master -o wide`
-mpi_pods=${mpi_pods_master}${mpi_pods}
 mpi_pods_names=`echo "${mpi_pods}" | awk 'FNR > 1 {print $1}'`
 mpi_pods_ips=`echo "${mpi_pods}" | awk 'FNR > 1 {print $6}'`
 mpi_pods_count=`echo "${mpi_pods_ips}" | wc -l`
