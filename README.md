@@ -23,7 +23,7 @@ oc process -f mpi-template.yml -p MPI_BASE_IMAGE_URI=https://github.com/bchardim
 
 ### Run MPI Job
 
-Run a sample job against 10 pods
+Run a sample job against 10 mpi pods + master
 ```bash
 oc scale dc mpi --replicas 10
 oc wait dc mpi --for condition=available
@@ -31,8 +31,23 @@ oc wait dc mpi --for condition=available
 cd scripts
 ./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
 
-oc scale dc mpi --replicas 0
+oc scale dc mpi --replicas 1
 ```
+
+Calculate pi using 11000000 points against 10 mpi pods + master
+```bash
+oc scale dc mpi --replicas 10
+oc wait dc mpi --for condition=available
+
+cd scripts
+./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 11000000
+...
+...
+Calculated pi is 3.1415404000, error is 0.0000522536
+
+oc scale dc mpi --replicas 1
+```
+
 
 
 ## References
