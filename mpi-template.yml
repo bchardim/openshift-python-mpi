@@ -38,7 +38,7 @@ objects:
       type: Git
     strategy:
       dockerStrategy:
-        dockerfilePath: Dockerfile.centos7rpm
+        dockerfilePath: Dockerfile.centos7
       type: Docker
     triggers:
     - type: ConfigChange
