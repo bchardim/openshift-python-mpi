@@ -6,7 +6,7 @@ USER root
 RUN yum -y install epel-release && \
     yum -y upgrade && \
     yum -y install centos-release && \
-    yum -y install rsync gcc gcc-c++ openssh openssh-server openssh-clients openssl-libs openmpi3* *mpi4py*openmpi3* python3 python*numpy python*scipy && \
+    yum -y install rsync gcc gcc-c++ openssh openssh-server openssh-clients openssl-libs openmpi mpi4py-openmpi python3 python*numpy python*scipy && \
     yum clean all
 
 RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config && \
@@ -28,8 +28,8 @@ COPY etc/environment /etc/environment
 USER sds
 COPY --chown=sds:root src/ src/
 EXPOSE 2022
-ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi3/bin/"
-ENV LD_LIBRARY_PATH="/usr/lib64/openmpi3"
-ENV PYTHONPATH="/usr/lib64/python2.7/site-packages/openmpi3"
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi/bin/"
+ENV LD_LIBRARY_PATH="/usr/lib64/openmpi"
+ENV PYTHONPATH="/usr/lib64/python2.7/site-packages/openmpi"
 
 CMD [ "/entrypoint.sh"]
