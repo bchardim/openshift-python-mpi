@@ -27,5 +27,6 @@ COPY etc/profile.d/ /etc/profile.d/
 USER sds
 COPY --chown=sds:root src/ src/
 EXPOSE 2022
+ENV PATH "$PATH:/usr/lib64/openmpi/bin/"
 
 CMD [ "/entrypoint.sh"]
