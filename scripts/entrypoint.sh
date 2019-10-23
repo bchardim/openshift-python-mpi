@@ -26,6 +26,7 @@ chmod 600 /etc/ssh/ssh_*key
 
 echo "Ensure the .ssh directory exists"
 mkdir -p "${sds_home_dir}/notebooks"
+chmod 700 "${sds_home_dir}/notebooks"
 mkdir -p "${sds_home_dir}/.ssh"
 chmod 700 "${sds_home_dir}/.ssh"
 
@@ -40,7 +41,7 @@ cp -H "${temp_sds_identity_dir}/"* "${sds_home_dir}/.ssh/"
 chmod 600 "${sds_home_dir}/.ssh/"*
 
 echo 'Set home directory permisions'
-chown -R sds:root "${sds_home_dir}"
+chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
 
 echo "Start sshd"
