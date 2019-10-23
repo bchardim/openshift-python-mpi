@@ -25,6 +25,7 @@ ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
 chmod 600 /etc/ssh/ssh_*key
 
 echo "Ensure the .ssh directory exists"
+mkdir -p "${sds_home_dir}/notebooks"
 mkdir -p "${sds_home_dir}/.ssh"
 chmod 700 "${sds_home_dir}/.ssh"
 
@@ -39,8 +40,16 @@ cp -H "${temp_sds_identity_dir}/"* "${sds_home_dir}/.ssh/"
 chmod 600 "${sds_home_dir}/.ssh/"*
 
 echo 'Set home directory permisions'
-chown sds:root "${sds_home_dir}"
+chown -R sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
 
-echo "start sshd"
+echo "Start sshd"
 exec /usr/sbin/sshd -D
+
+# Start jupyter-notebook only on master
+if [[ $(hostname) =~ .*master.* ]]
+then
+  echo "Start jupyter-notebook only on master"	
+  exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
+fi	
+

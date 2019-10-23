@@ -53,7 +53,9 @@ COPY etc/environment /etc/environment
 
 USER sds
 COPY --chown=sds:root src/ src/
-EXPOSE 2022
+WORKDIR /home/sds
+EXPOSE 2022 8888
+
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi/bin/"
 ENV LD_LIBRARY_PATH="/usr/lib64/openmpi"
 ENV PYTHONPATH="/usr/lib64/python3.7/site-packages/openmpi"
