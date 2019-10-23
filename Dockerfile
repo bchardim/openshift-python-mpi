@@ -6,8 +6,9 @@ RUN microdnf install -y \
 python3 \
 python3-notebook \
 python3-ipython \
-python3-openmpi* \
-python3-mpi4py* \
+python3-openmpi \
+python3-mpi4py-openmpi \
+python3-mpi4py-mpich \
 python3-numpy \
 python3-scipy \
 python3-matplotlib \
@@ -21,8 +22,8 @@ dnf \
 rsync \
 gcc \
 gcc-c++ \
-mpi4py-mpich \
-mpi4py-openmpi \
+openmpi \
+mpi4py-common \
 openssh \
 openssh-server \
 openssh-clients \
