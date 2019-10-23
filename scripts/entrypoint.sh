@@ -45,7 +45,7 @@ chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
 
 # Start sshd and jupyter-notebook
-if [[ $(hostname) =~ .*master.* ]]
+if [[ $HOSTNAME =~ .*master.* ]]
 then
   echo "Start sshd and jupyter-notebook"	
   exec  /usr/sbin/sshd -D && jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
