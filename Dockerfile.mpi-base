@@ -6,7 +6,7 @@ USER root
 RUN yum -y install epel-release && \
     yum -y upgrade && \
     yum -y install centos-release && \
-    yum -y install rsync openmpi* mpich* gcc gcc-c++ python3 openssh openssh-server openssh-clients openssl-libs numpy* scipy* mpi4py* python*devel python*numpy python*scipy python*ipython python*setuptools && \
+    yum -y install rsync openmpi* mpich* gcc gcc-c++ python3 openssh openssh-server openssh-clients openssl-libs numpy* scipy* mpi4py* python*devel python*numpy python*scipy python*ipython python*setuptools python*pip && \
     yum clean all
 
 # Install 
