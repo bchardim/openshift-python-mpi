@@ -5,10 +5,12 @@ FROM registry.fedoraproject.org/fedora-minimal:30
 RUN microdnf install -y \
 python3 \
 python3-notebook \
+python3-ipython \
+python3-openmpi* \
+python3-mpi4py* \
 python3-numpy \
 python3-scipy \
 python3-matplotlib \
-python3-ipython \
 python3-scikit-learn \
 python3-pandas \
 python3-pydotplus \
@@ -17,15 +19,12 @@ graphviz-python3 \
 graphviz \
 dnf \
 rsync \
-openmpi \
-mpich \
 gcc \
 gcc-c++ \
 openssh \
 openssh-server \
 openssh-clients \
 openssl-libs \
-python3-ipython \
 && dnf reinstall -y tzdata \ 
 && microdnf update \
 && microdnf clean all \
