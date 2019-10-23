@@ -10,7 +10,8 @@ RUN yum -y install epel-release && \
     yum clean all
 
 # Install 
-RUN pip --no-cache-dir install --upgrade scikit-learn
+RUN pip --no-cache-dir install --upgrade pip && \
+    pip --no-cache-dir install --upgrade scikit-learn
 
 
 RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config && \
