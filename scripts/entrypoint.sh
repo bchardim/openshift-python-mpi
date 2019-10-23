@@ -44,13 +44,13 @@ echo 'Set home directory permisions'
 chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
 
-echo "Start sshd"
-exec /usr/sbin/sshd -D
-
-# Start jupyter-notebook only on master
+# Start sshd and jupyter-notebook
 if [[ $(hostname) =~ .*master.* ]]
 then
-  echo "Start jupyter-notebook only on master"	
-  exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
+  echo "Start sshd and jupyter-notebook"	
+  exec  /usr/sbin/sshd -D && jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
+else
+  echo "Start sshd"	 
+  exec /usr/sbin/sshd -D
 fi	
 
