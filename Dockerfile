@@ -21,7 +21,8 @@ dnf \
 rsync \
 gcc \
 gcc-c++ \
-mpi4py \
+mpi4py-mpich \
+mpi4py-openmpi \
 openssh \
 openssh-server \
 openssh-clients \
