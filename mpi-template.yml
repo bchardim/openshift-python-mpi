@@ -38,7 +38,7 @@ objects:
       type: Git
     strategy:
       dockerStrategy:
-        dockerfilePath: Dockerfile.mpi-base
+        dockerfilePath: Dockerfile
       type: Docker
     triggers:
     - type: ConfigChange
