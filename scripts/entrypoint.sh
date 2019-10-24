@@ -48,7 +48,7 @@ chmod 750 "${sds_home_dir}"
 if [[ $HOSTNAME =~ .*master.* ]]
 then
   echo "Start sshd"
-  /usr/sbin/sshd -D  
+  nohup /usr/sbin/sshd -D &
   echo "Start jupyter-notebook" 
   exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
 else
