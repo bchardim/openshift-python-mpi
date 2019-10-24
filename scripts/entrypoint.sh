@@ -50,7 +50,7 @@ then
   echo "Start sshd at master pod"
   nohup /usr/sbin/sshd &
   echo "Start jupyter-notebook at master pod" 
-  exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
+  exec jupyter-notebook --notebook-dir ${sds_home_dir}/notebooks --ip 0.0.0.0 --port 8888 --no-browser
 else
   echo "Start sshd at mpi pod"	 
   exec /usr/sbin/sshd -D
