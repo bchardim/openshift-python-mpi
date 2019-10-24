@@ -16,7 +16,12 @@ cat /etc/passwd | sed "s/^sds:x:`echo ${default_sds_uid}`.*/sds:x:`echo ${actual
 
 echo "Create home directory"
 mkdir -p "${sds_home_dir}"
-sds_home_dir='./'
+sds_home_dir='.'
+
+
+id
+pwd
+ls -lrta
 
 #echo "Generate the container specfic host keys for sshd"
 ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
