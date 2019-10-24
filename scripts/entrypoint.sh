@@ -47,11 +47,11 @@ chmod 750 "${sds_home_dir}"
 # Start sshd and jupyter-notebook
 if [[ $HOSTNAME =~ .*master.* ]]
 then
-  echo "Start sshd"
-  nohup /usr/sbin/sshd -D &
-  echo "Start jupyter-notebook" 
+  echo "Start sshd at master pod"
+  nohup /usr/sbin/sshd &
+  echo "Start jupyter-notebook at master pod" 
   exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser
 else
-  echo "Start sshd"	 
+  echo "Start sshd at mpi pod"	 
   exec /usr/sbin/sshd -D
 fi
