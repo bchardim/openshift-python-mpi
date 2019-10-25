@@ -178,6 +178,16 @@ objects:
           kind: ImageStreamTag
           name: 'mpi-base:latest'
       type: ImageChange
+- apiVersion: apps.openshift.io/v1
+  kind: Service
+  metadata:
+    name: mpi-master-service
+  spec:
+    ports:
+      - port: 8888
+        targetPort: 8888
+    selector:
+      name: mpi-master
 parameters:
 - name: MPI_BASE_IMAGE_URI
   description: URI to the git project contianing the saml-service-provider image definintion
