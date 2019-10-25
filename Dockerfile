@@ -1,7 +1,6 @@
 # vi: ft=Dockerfile
 FROM registry.fedoraproject.org/fedora-minimal:30
 
-
 RUN microdnf install -y \
 python3 \
 python3-notebook \
