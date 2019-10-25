@@ -193,15 +193,14 @@ objects:
 - apiVersion: v1
   kind: Route
   metadata:
-  labels:
+    labels:
       app: mpi-master
-  name: mpi-master-route
-spec:
-  host: gw-learning.apps.ocp4.info.net
-  path: "/"
-  to:
-    kind: Service
-    name: mpi-master
+    name: mpi-master-route
+  spec:
+    host: gw-learning.apps.ocp4.info.net
+    to:
+      kind: Service
+      name: mpi-master
 parameters:
 - name: MPI_BASE_IMAGE_URI
   description: URI to the git project contianing the saml-service-provider image definintion
