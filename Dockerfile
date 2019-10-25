@@ -1,5 +1,5 @@
 # vi: ft=Dockerfile
-FROM registry.fedoraproject.org/fedora-minimal:30
+FROM quay.io/bchardim/fedora30-python-mpi:latest
 
 RUN microdnf install -y \
 python3 \

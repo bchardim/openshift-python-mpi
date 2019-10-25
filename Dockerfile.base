@@ -1,0 +1,35 @@
+# vi: ft=Dockerfile
+FROM registry.fedoraproject.org/fedora-minimal:30
+
+RUN microdnf install -y \
+python3 \
+python3-notebook \
+python3-ipython \
+python3-openmpi \
+python3-mpi4py-openmpi \
+python3-mpi4py-mpich \
+python3-numpy \
+python3-scipy \
+python3-matplotlib \
+python3-scikit-learn \
+python3-pandas \
+python3-pydotplus \
+python3-pydot \
+graphviz-python3 \
+graphviz \
+dnf \
+rsync \
+gcc \
+gcc-c++ \
+openmpi \
+mpi4py-common \
+openssh \
+openssh-server \
+openssh-clients \
+openssl-libs \
+&& dnf reinstall -y tzdata \ 
+&& microdnf update \
+&& microdnf clean all \
+&& rm -rf /var/cache/yum \
+&& rm -rf /var/cache/dnf
+ 
