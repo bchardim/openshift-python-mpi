@@ -16,8 +16,7 @@ cat /etc/passwd | sed "s/^sds:x:`echo ${default_sds_uid}`.*/sds:x:`echo ${actual
 
 echo "Create home directory"
 mkdir -p "${sds_home_dir}"
-chown sds:root "${sds_home_dir}"
-chmod 770 "${sds_home_dir}"
+setfacl -R -m u:${actual_sds_uid}:rwx ${sds_home_dir}
 
 echo "Generate the container specfic host keys for sshd"
 ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
@@ -42,9 +41,9 @@ echo "Copy the SDS identity key files into /home/sds/.ssh/ and set file permisio
 cp -H "${temp_sds_identity_dir}/"* "${sds_home_dir}/.ssh/"
 chmod 600 "${sds_home_dir}/.ssh/"*
 
-#echo 'Set home directory permisions'
-#chown sds:root "${sds_home_dir}"
-#chmod 750 "${sds_home_dir}"
+###echo 'Set home directory permisions'
+###chown sds:root "${sds_home_dir}"
+###chmod 750 "${sds_home_dir}"
 
 # Start sshd and jupyter-notebook
 if [[ $HOSTNAME =~ .*master.* ]]
