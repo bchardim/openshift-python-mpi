@@ -16,6 +16,8 @@ cat /etc/passwd | sed "s/^sds:x:`echo ${default_sds_uid}`.*/sds:x:`echo ${actual
 
 echo "Create home directory"
 mkdir -p "${sds_home_dir}"
+chown sds:root "${sds_home_dir}"
+chmod 770 "${sds_home_dir}"
 
 echo "Generate the container specfic host keys for sshd"
 ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
@@ -40,19 +42,17 @@ echo "Copy the SDS identity key files into /home/sds/.ssh/ and set file permisio
 cp -H "${temp_sds_identity_dir}/"* "${sds_home_dir}/.ssh/"
 chmod 600 "${sds_home_dir}/.ssh/"*
 
-echo 'Set home directory permisions'
-chown sds:root "${sds_home_dir}"
-chmod 750 "${sds_home_dir}"
+#echo 'Set home directory permisions'
+#chown sds:root "${sds_home_dir}"
+#chmod 750 "${sds_home_dir}"
 
 # Start sshd and jupyter-notebook
 if [[ $HOSTNAME =~ .*master.* ]]
 then
   echo "Start sshd at master pod"
-  #nohup /usr/sbin/sshd &
+  nohup /usr/sbin/sshd &
   echo "Start jupyter-notebook at master pod" 
-  #exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser --notebook-dir ${sds_home_dir}
-  nohup jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser --notebook-dir ${sds_home_dir} &
-  exec /usr/sbin/sshd -D
+  exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser --notebook-dir ${sds_home_dir}
 else
   echo "Start sshd at mpi pod"	 
   exec /usr/sbin/sshd -D
