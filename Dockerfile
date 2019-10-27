@@ -1,4 +1,5 @@
 # vi: ft=Dockerfile
+# FROM registry.fedoraproject.org/fedora-minimal:30
 FROM quay.io/bchardim/fedora30-python-mpi:latest
 
 RUN microdnf install -y \
@@ -40,7 +41,7 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 775 /etc/ssh && \
     chmod 660 /etc/ssh/sshd_config && \
     chmod 664 /etc/passwd /etc/group && \
-    adduser --system -s /bin/bash -u 1000520000 -d /home/sds -g 0 sds && \
+    #adduser --system -s /bin/bash -u 1000520000 -d /home/sds -g 0 sds && \
     chmod 775 /home && \
     mkdir -p  /home/sds && \
     chmod 775 /home/sds && \
