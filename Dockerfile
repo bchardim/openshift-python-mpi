@@ -42,6 +42,7 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 660 /etc/ssh/sshd_config && \
     chmod 664 /etc/passwd /etc/group && \
     #adduser --system -s /bin/bash -u 1000520000 -d /home/sds -g 0 sds && \
+    adduser --system -s /bin/bash -u 1001 -d /home/sds -g 0 sds && \
     chmod 775 /home && \
     mkdir -p  /home/sds && \
     chmod 775 /home/sds && \
