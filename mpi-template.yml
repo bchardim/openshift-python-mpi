@@ -63,8 +63,6 @@ objects:
       spec:
         containers:
         - name: mpi
-          securityContext:
-            runAsUser: 1000520000
           image: 'mpi-base'
           imagePullPolicy: Always
           ports:
@@ -132,13 +130,13 @@ objects:
       spec:
         containers:
         - name: mpi-master
-          securityContext:
-            runAsUser: 1000520000
           image: 'mpi-base'
           imagePullPolicy: Always
           ports:
           - containerPort: 2022
             protocol: TCP
+          - containerPort: 8888
+            protocol: TCP  
           resources:
             limits:
               cpu: '2'

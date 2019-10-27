@@ -41,7 +41,6 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 775 /etc/ssh && \
     chmod 660 /etc/ssh/sshd_config && \
     chmod 664 /etc/passwd /etc/group && \
-    #adduser --system -s /bin/bash -u 1000520000 -d /home/sds -g 0 sds && \
     adduser --system -s /bin/bash -u 1001 -d /home/sds -g 0 sds && \
     chmod 775 /home && \
     mkdir -p  /home/sds && \
@@ -57,7 +56,6 @@ COPY etc/environment /etc/environment
 
 USER sds
 COPY --chown=sds:root src/ src/
-WORKDIR /home/sds
 EXPOSE 2022 8888
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi/bin/"
