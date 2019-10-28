@@ -37,5 +37,6 @@ echo "#######################################################"
 echo "# Run mpi scripts in parallel on all pod              #"
 echo "#######################################################"
 echo ""
-echo "oc rsh --request-timeout=3600 ${mpi_pod_head} mpirun -np ${mpi_pods_count} -H ${mpi_host_list} ${mpi_scripts_dir}/$1 $2 $3"
-oc rsh --request-timeout=3600 ${mpi_pod_head} mpirun -np ${mpi_pods_count} -H ${mpi_host_list} ${mpi_scripts_dir}/$1 $2 $3
+mpi_opts="-np ${mpi_pods_count} -mca btl ^openib -H ${mpi_host_list}"
+echo "oc rsh --request-timeout=3600 ${mpi_pod_head} mpirun ${mpi_opts} ${mpi_scripts_dir}/$1 $2 $3"
+oc rsh --request-timeout=3600 ${mpi_pod_head} mpirun ${mpi_opts} ${mpi_scripts_dir}/$1 $2 $3

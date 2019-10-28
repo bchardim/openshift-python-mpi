@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Config
 default_sds_uid=1001
 actual_sds_uid=`id -u`
 sds_home_dir='/home/sds'
@@ -13,12 +14,9 @@ temp_sds_identity_dir='/etc/ssh/sds'
 echo "Set SDS UID from ${default_sds_uid} to ${actual_sds_uid}"
 regex_sds_home_dir=$(printf '%s\n' "${sds_home_dir}" | sed 's/[\&/]/\\&/g')
 cat /etc/passwd | sed "s/^sds:x:`echo ${default_sds_uid}`.*/sds:x:`echo ${actual_sds_uid}`:0::`echo ${regex_sds_home_dir}`:\/bin\/bash/" > /etc/passwd
-cat /etc/passwd
 
 echo "Create home directory"
 mkdir -p "${sds_home_dir}"
-ls -lrta /home/
-#setfacl -R -m u:${actual_sds_uid}:rwx ${sds_home_dir}
 
 echo "Generate the container specfic host keys for sshd"
 ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
@@ -43,12 +41,10 @@ echo "Copy the SDS identity key files into /home/sds/.ssh/ and set file permisio
 cp -H "${temp_sds_identity_dir}/"* "${sds_home_dir}/.ssh/"
 chmod 600 "${sds_home_dir}/.ssh/"*
 
-echo 'Set home directory permisions'
+echo 'Set home directory permisions and env'
 chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
-id && export HOME=${sds_home_dir} && cd ${sds_home_dir}
-ls -lrta  ./
-
+export HOME=${sds_home_dir} && cd ${sds_home_dir}
 
 # Start sshd and jupyter-notebook
 if [[ $HOSTNAME =~ .*master.* ]]
@@ -61,3 +57,4 @@ else
   echo "Start sshd at mpi pod"	 
   exec /usr/sbin/sshd -D
 fi
+

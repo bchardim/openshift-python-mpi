@@ -43,13 +43,11 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 664 /etc/passwd /etc/group && \
     adduser --system -s /bin/bash -u 1001 -g 0 sds && \
     chmod 775 /home && \
-    cat /etc/passwd && \
-    ls -lrta /home
+    cat /etc/passwd
 
 COPY scripts/entrypoint.sh  /entrypoint.sh
 
 RUN chmod 750 /entrypoint.sh 
-COPY etc/profile.d/ /etc/profile.d/
 COPY etc/environment /etc/environment
 
 USER sds
