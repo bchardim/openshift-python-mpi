@@ -5,6 +5,7 @@ default_sds_uid=1001
 actual_sds_uid=`id -u`
 sds_home_dir='/home/sds'
 temp_sds_identity_dir='/etc/ssh/sds'
+temp_notebooks_dir='/notebooks'
 container_ip=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" | grep -v "^127" | sort -u)
 
 # update the sds user with the id provided by openshift
@@ -41,6 +42,10 @@ chmod 700 "${sds_home_dir}/.ssh"
 echo "Copy the SDS identity key files into /home/sds/.ssh/ and set file permisions"
 cp -H "${temp_sds_identity_dir}/"* "${sds_home_dir}/.ssh/"
 chmod 600 "${sds_home_dir}/.ssh/"*
+
+echo 'Copy notebooks files'
+cp -H "${temp_notebooks_dir}/"* "${sds_home_dir}/notebooks/"
+chmod 700 "${sds_home_dir}/notebooks/"
 
 echo 'Set home directory permisions and env'
 chown sds:root "${sds_home_dir}"

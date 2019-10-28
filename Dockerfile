@@ -51,7 +51,7 @@ RUN chmod 750 /entrypoint.sh
 COPY etc/environment /etc/environment
 
 USER sds
-COPY --chown=sds:root src/ src/
+COPY --chown=sds:root notebooks/ notebooks/
 EXPOSE 2022 8888
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi/bin/"

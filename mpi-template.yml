@@ -204,7 +204,7 @@ objects:
       termination: edge 
     to:
       kind: Service
-      name: mpi-master
+      name: mpi-master-svc
     wildcardPolicy: None
 parameters:
 - name: MPI_BASE_IMAGE_URI
