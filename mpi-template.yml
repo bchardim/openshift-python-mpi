@@ -191,7 +191,7 @@ objects:
       - port: 8888
         targetPort: 8888
     selector:
-      name: mpi-master
+      app: mpi-master
 - apiVersion: v1
   kind: Route
   metadata:
@@ -200,9 +200,12 @@ objects:
     name: mpi-master-route
   spec:
     host: gw-learning.apps.ocp4.info.net
+    tls:
+      termination: edge 
     to:
       kind: Service
       name: mpi-master
+    wildcardPolicy: None
 parameters:
 - name: MPI_BASE_IMAGE_URI
   description: URI to the git project contianing the saml-service-provider image definintion
