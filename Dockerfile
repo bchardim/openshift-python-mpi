@@ -24,6 +24,7 @@ gcc \
 gcc-c++ \
 openmpi \
 mpi4py-common \
+sagemath \
 openssh \
 openssh-server \
 openssh-clients \
