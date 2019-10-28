@@ -46,7 +46,7 @@ chmod 600 "${sds_home_dir}/.ssh/"*
 echo 'Set home directory permisions'
 chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
-id && cd ${sds_home_dir}
+id && export HOME=${sds_home_dir} && cd ${sds_home_dir}
 ls -lrta  ./
 
 
