@@ -5,6 +5,7 @@ default_sds_uid=1001
 actual_sds_uid=`id -u`
 sds_home_dir='/home/sds'
 temp_sds_identity_dir='/etc/ssh/sds'
+container_ip=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" | grep -v "^127" | sort -u)
 
 # update the sds user with the id provided by openshift
 # cant use inplace sed because of tmp file issue
@@ -52,7 +53,7 @@ then
   echo "Start sshd at master pod"
   nohup /usr/sbin/sshd &
   echo "Start jupyter-notebook at master pod" 
-  exec jupyter-notebook --ip 0.0.0.0 --port 8888 --no-browser --notebook-dir ${sds_home_dir} --NotebookApp.token=''
+  exec jupyter-notebook --ip ${container_ip} --port 8888 --no-browser --notebook-dir ${sds_home_dir} --NotebookApp.token=''
 else
   echo "Start sshd at mpi pod"	 
   exec /usr/sbin/sshd -D
