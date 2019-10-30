@@ -78,7 +78,7 @@ objects:
           volumeMounts:
           - mountPath: /etc/ssh/sds
             name: sds-ssh
-          - mountPath: /home/sds
+          - mountPath: /home/sds/.ipython
             name: nfs-sds-vol 
         volumes:
         - name: nfs-sds-vol
@@ -152,7 +152,7 @@ objects:
           volumeMounts:
           - mountPath: /etc/ssh/sds
             name: sds-ssh
-          - mountPath: /home/sds  
+          - mountPath: /home/sds/.ipython 
             name: nfs-sds-vol
         volumes:
         - name: nfs-sds-vol
