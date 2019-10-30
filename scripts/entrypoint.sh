@@ -48,7 +48,7 @@ cp -H "${temp_notebooks_dir}/"* "${sds_home_dir}/notebooks/"
 chmod 700 "${sds_home_dir}/notebooks/"
 
 echo 'Set home directory permisions and env'
-chown sds:root "${sds_home_dir}"
+###chown sds:root "${sds_home_dir}"
 chmod 750 "${sds_home_dir}"
 export HOME=${sds_home_dir} && cd ${sds_home_dir}
 
