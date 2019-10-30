@@ -78,7 +78,12 @@ objects:
           volumeMounts:
           - mountPath: /etc/ssh/sds
             name: sds-ssh
+          - mountPath: /home/sds
+            name: nfs-sds-vol 
         volumes:
+        - name: nfs-sds-vol
+          persistentVolumeClaim:
+            claimName: nfs-pvc-sds 
         - name: sds-ssh
           projected:
             defaultMode: 0600
@@ -136,7 +141,7 @@ objects:
           - containerPort: 2022
             protocol: TCP
           - containerPort: 8888
-            protocol: TCP  
+            protocol: TCP
           resources:
             limits:
               cpu: '2'
@@ -147,7 +152,12 @@ objects:
           volumeMounts:
           - mountPath: /etc/ssh/sds
             name: sds-ssh
+          - mountPath: /home/sds  
+            name: nfs-sds-vol
         volumes:
+        - name: nfs-sds-vol
+          persistentVolumeClaim:
+            claimName: nfs-pvc-sds
         - name: sds-ssh
           projected:
             defaultMode: 0600

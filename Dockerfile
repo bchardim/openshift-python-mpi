@@ -44,6 +44,8 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 664 /etc/passwd /etc/group && \
     adduser --system -s /bin/bash -u 1001 -g 0 sds && \
     chmod 775 /home && \
+    mkdir -p /home/sds && \
+    chmod 777 /home/sds && \
     cat /etc/passwd
 
 COPY scripts/entrypoint.sh  /entrypoint.sh
