@@ -14,14 +14,14 @@ ipython3 profile create --parallel --profile=mpi
 jupyter serverextension enable --py ipyparallel
 jupyter nbextension enable --py ipyparallel
 
-cat > ~/.ipython/profile_mpi/ipcluster_config.py << 'HOSTEOF'
+cat > ~/.ipython/profile_mpi/ipcluster_config.py << HOSTEOF
 c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
 c.MPILauncher.mpi_args = ["-hostfile", "/home/sds/hosts"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
 HOSTEOF
 
-cat > ~/.ipython/profile_mpi/ipcontroller_config.py  << 'EOF'
+cat > ~/.ipython/profile_mpi/ipcontroller_config.py  << EOF
 c.HubFactory.ip = '${MASTER_IP}'
 EOF
 

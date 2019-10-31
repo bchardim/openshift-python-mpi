@@ -48,4 +48,4 @@ echo "#######################################################"
 echo "# Run reconfigure-mpi-cluster.sh in master            #"
 echo "#######################################################"
 echo ""
-oc rsh --request-timeout=3600 ${mpi_pod_head} bash ${mpi_scripts_dir}/reconfigure-mpi-cluster.sh ${mpi_master_ip} ${mpi_pods_ips} ${mpi_pods_count} 
+oc rsh --request-timeout=3600 ${mpi_pod_head} bash ${mpi_scripts_dir}/reconfigure-mpi-cluster.sh "${mpi_master_ip}" "${mpi_pods_ips}" "${mpi_pods_count}"
