@@ -12,7 +12,9 @@ echo ""
 
 ipython3 profile create --parallel --profile=mpi
 jupyter serverextension enable --py ipyparallel
-jupyter nbextension enable --py ipyparallel
+# The following enables mpi cluster control from notebook
+# We prefear mpi cluster control from OCP
+###jupyter nbextension enable --py ipyparallel
 
 cat > ~/.ipython/profile_mpi/ipcluster_config.py << HOSTEOF
 c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
