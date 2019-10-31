@@ -10,6 +10,20 @@ Get the project
 git clone https://github.com/bchardim/openshift-python-mpi
 cd openshift-python-mpi
 ```
+
+Create the persistent shared storage needed for MPI cluster operation. In this case we are going to use NFS in RWX mode.
+```bash
+oc create -f storage/nfs-mpi-pv.yaml
+persistentvolume/nfs-pv-mpi created
+
+oc create -f storage/nfs-mpi-pvc.yaml
+persistentvolumeclaim/nfs-pvc-mpi created
+
+oc get pvc
+NAME          STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+nfs-pvc-mpi   Bound    nfs-pv-mpi   2Gi        RWX                           3s
+```
+
 Create the SSH information
 ```bash
 bash scripts/generate-ssh-configs.sh
