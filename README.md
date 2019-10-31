@@ -11,6 +11,11 @@ git clone https://github.com/bchardim/openshift-python-mpi
 cd openshift-python-mpi
 ```
 
+Create Openshift Project
+```bash
+oc new-project gw-learning
+```
+
 Create the persistent shared storage needed for MPI cluster operation. In this case we are going to use NFS in RWX mode.
 ```bash
 oc create -f storage/nfs-mpi-pv.yaml
@@ -29,9 +34,8 @@ Create the SSH information
 bash scripts/generate-ssh-configs.sh
 bash scripts/create-config-maps-and-secrets.sh
 ```
-Create the OpenShift project and intitial resources
+Create the OpenShift resources
 ```bash
-oc new-project gw-learning
 oc process -f mpi-template.yml -p MPI_BASE_IMAGE_URI=https://github.com/bchardim/openshift-python-mpi | oc create -f -
 ```
 
