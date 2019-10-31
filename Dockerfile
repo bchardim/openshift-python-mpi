@@ -42,7 +42,7 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 775 /etc/ssh && \
     chmod 660 /etc/ssh/sshd_config && \
     chmod 664 /etc/passwd /etc/group && \
-    adduser --system -s /bin/bash -u 1001 -g 0 sds && \
+    adduser --system -s /bin/bash -u 1001 -g 0 mpi && \
     chmod 775 /home && \
     mkdir -p /.ipython && \
     chmod 775 /.ipython && \
@@ -53,8 +53,8 @@ COPY scripts/entrypoint.sh  /entrypoint.sh
 RUN chmod 750 /entrypoint.sh 
 COPY etc/environment /etc/environment
 
-USER sds
-COPY --chown=sds:root notebooks/ notebooks/
+USER mpi
+COPY --chown=mpi:root notebooks/ notebooks/
 EXPOSE 2022 8888
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi/bin/"

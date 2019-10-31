@@ -28,7 +28,7 @@ mpi_pods_ips=`echo "${mpi_pods}" | awk 'FNR > 1 {print $6}'`
 mpi_pods_count=`echo "${mpi_pods_ips}" | wc -l`
 mpi_pod_head=`echo "${mpi_pods_master}" | awk 'FNR > 1 {print $1}' | head -n 1`
 mpi_host_list=`echo "${mpi_pods_ips}" | tr '\n' ',' | sed 's/.$//'`
-mpi_scripts_dir='/home/sds/mpi-scripts'
+mpi_scripts_dir='/home/mpi/mpi-scripts'
 
 echo "Pod list: $(echo ${mpi_pods_names} | tr '\n' ' ')"
 echo "Pod count: ${mpi_pods_count}"

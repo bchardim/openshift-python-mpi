@@ -76,29 +76,29 @@ objects:
               cpu: '1'
               memory: 512Mi
           volumeMounts:
-          - mountPath: /etc/ssh/sds
-            name: sds-ssh
+          - mountPath: /etc/ssh/mpi
+            name: mpi-ssh
           - mountPath: /.ipython
-            name: nfs-sds-vol 
+            name: nfs-mpi-vol 
         volumes:
-        - name: nfs-sds-vol
+        - name: nfs-mpi-vol
           persistentVolumeClaim:
-            claimName: nfs-pvc-sds 
-        - name: sds-ssh
+            claimName: nfs-pvc-mpi 
+        - name: mpi-ssh
           projected:
             defaultMode: 0600
             sources:
             - secret:
-                name: sds-identity
+                name: mpi-identity
                 items:
                 - key: ssh-privatekey
                   mode: 0600
-                  path: sds_identity
+                  path: mpi_identity
                 - key: ssh-publickey
                   mode: 384
-                  path: sds_identity.pub
+                  path: mpi_identity.pub
             - configMap:
-                name: sds-ssh-config
+                name: mpi-ssh-config
                 items:
                 - key: ssh-authorized-keys
                   mode: 0600
@@ -150,29 +150,29 @@ objects:
               cpu: '2'
               memory: 8192Mi
           volumeMounts:
-          - mountPath: /etc/ssh/sds
-            name: sds-ssh
+          - mountPath: /etc/ssh/mpi
+            name: mpi-ssh
           - mountPath: /.ipython 
-            name: nfs-sds-vol
+            name: nfs-mpi-vol
         volumes:
-        - name: nfs-sds-vol
+        - name: nfs-mpi-vol
           persistentVolumeClaim:
-            claimName: nfs-pvc-sds
-        - name: sds-ssh
+            claimName: nfs-pvc-mpi
+        - name: mpi-ssh
           projected:
             defaultMode: 0600
             sources:
             - secret:
-                name: sds-identity
+                name: mpi-identity
                 items:
                 - key: ssh-privatekey
                   mode: 0600
-                  path: sds_identity
+                  path: mpi_identity
                 - key: ssh-publickey
                   mode: 384
-                  path: sds_identity.pub
+                  path: mpi_identity.pub
             - configMap:
-                name: sds-ssh-config
+                name: mpi-ssh-config
                 items:
                 - key: ssh-authorized-keys
                   mode: 0600

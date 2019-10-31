@@ -40,7 +40,7 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 775 /etc/ssh && \
     chmod 660 /etc/ssh/sshd_config && \
     chmod 664 /etc/passwd /etc/group && \
-    adduser --system -s /bin/bash -u 10001 -g 0 sds && \
+    adduser --system -s /bin/bash -u 10001 -g 0 mpi && \
     chmod 775 /home && \
     cat /etc/passwd
 
@@ -54,8 +54,8 @@ RUN chmod 750 /entrypoint.sh && \
 
 COPY etc/profile.d/ /etc/profile.d/
 
-USER sds
-COPY --chown=sds:root src/ src/
+USER mpi
+COPY --chown=mpi:root src/ src/
 EXPOSE 2022
 
 CMD [ "/entrypoint.sh"]
