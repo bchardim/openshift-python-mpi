@@ -10,6 +10,7 @@ echo ""
 
 oc scale dc mpi --replicas ${REP}
 oc wait dc mpi --for condition=available
+sleep 30
 
 echo ""
 echo "#######################################################"
