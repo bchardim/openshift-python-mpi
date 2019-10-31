@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-sds
+spec:
+  capacity:
+    storage: 2Gi 
+  accessModes:
+    - ReadWriteMany 
+  persistentVolumeReclaimPolicy: Retain 
+  nfs: 
+    path: /nfs/sds 
+    server: 192.168.122.2 
+    readOnly: false
