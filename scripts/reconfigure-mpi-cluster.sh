@@ -22,7 +22,7 @@ c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
 c.MPILauncher.mpi_args = ["-hostfile", "/home/mpi/hosts"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
-c.IPClusterStart.delay = 30
+c.IPClusterStart.delay = 10
 HOSTEOF
 
 cat > ~/.ipython/profile_mpi/ipengine_config.py << ENGEOF
