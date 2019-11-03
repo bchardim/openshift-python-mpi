@@ -41,9 +41,9 @@ $ oc process -f mpi-template.yml -p MPI_NUMBER_CPUS=2 -p MPI_MEMORY=1024Mi -p MP
 
 ### Run MPI Job
 
-Run a sample job against 10 mpi pods + master
+Run a sample job against 5 mpi pods + master (6x2 = 12 procs)
 ```bash
-$ oc scale dc mpi --replicas 10
+$ oc scale dc mpi --replicas 5
 $ oc wait dc mpi --for condition=available
 
 $ cd scripts
@@ -52,13 +52,13 @@ $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
 $ oc scale dc mpi --replicas 1
 ```
 
-Calculate pi using 11000000 points against 10 mpi pods + master
+Calculate pi using 12000000 points against 5 mpi pods + master (6x2 = 12 procs)
 ```bash
-$ oc scale dc mpi --replicas 10
+$ oc scale dc mpi --replicas 5
 $ oc wait dc mpi --for condition=available
 
 $ cd scripts
-$ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 11000000
+$ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 12000000
 ...
 ...
 Calculated pi is 3.1415404000, error is 0.0000522536
