@@ -224,7 +224,7 @@ parameters:
   value: master
 - name: MPI_NUMBER_CPUS
   description: Number of CPUs assigned to each mpi pod
-  value: 1
+  value: "1"
 - name: MPI_MEMORY
   description: Memory assigned to each mpi pod
   value: 512Mi
