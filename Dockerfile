@@ -38,8 +38,8 @@ openssl-libs \
 
 RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/sshd_config && \
     sed -i 's/#Port.*$/Port 2022/' /etc/ssh/sshd_config && \
-    sed -i 's/#MaxSessions 10/MaxSessions 200/' /etc/ssh/sshd_config && \
-    sed -i 's/#MaxStartups 10:30:100/MaxStartups 200:30:500/' /etc/ssh/sshd_config && \
+    sed -i 's/#MaxSessions 10/MaxSessions 50/' /etc/ssh/sshd_config && \
+    sed -i 's/#MaxStartups 10:30:100/MaxStartups 50:30:250/' /etc/ssh/sshd_config && \
     chmod 775 /var/run && \
     chmod 775 /etc/ssh && \
     chmod 660 /etc/ssh/sshd_config && \
