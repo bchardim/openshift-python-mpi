@@ -71,10 +71,10 @@ objects:
           resources:
             limits:
               cpu: '${MPI_NUMBER_CPUS}'
-              memory: ${MPI_MEMORY}
+              memory: '${MPI_MEMORY}'
             requests:
               cpu: '${MPI_NUMBER_CPUS}'
-              memory: ${MPI_MEMORY}
+              memory: '${MPI_MEMORY}'
           volumeMounts:
           - mountPath: /etc/ssh/mpi
             name: mpi-ssh
