@@ -70,11 +70,11 @@ objects:
             protocol: TCP
           resources:
             limits:
-              cpu: '${MPI_CPU}'
-              memory: '${MPI_MEMORY}'
+              cpu: '${MPI_POD_CPU}'
+              memory: '${MPI_POD_MEMORY}'
             requests:
-              cpu: '${MPI_CPU}'
-              memory: '${MPI_MEMORY}'
+              cpu: '${MPI_POD_CPU}'
+              memory: '${MPI_POD_MEMORY}'
           volumeMounts:
           - mountPath: /etc/ssh/mpi
             name: mpi-ssh
@@ -144,10 +144,10 @@ objects:
             protocol: TCP
           resources:
             limits:
-              cpu: '${MPI_CPU}'
+              cpu: '${MPI_POD_CPU}'
               memory: 5Gi
             requests:
-              cpu: '${MPI_CPU}'
+              cpu: '${MPI_POD_CPU}'
               memory: 4096Mi
           volumeMounts:
           - mountPath: /etc/ssh/mpi
@@ -222,9 +222,9 @@ parameters:
 - name: MPI_BASE_IMAGE_REF
   description: Git ref contianing the saml-service-provider image definintion
   value: master
-- name: MPI_CPU
+- name: MPI_POD_CPU
   description: Number of CPUs assigned to each mpi pod
   value: "1"
-- name: MPI_MEMORY
+- name: MPI_POD_MEMORY
   description: Memory assigned to each mpi pod
   value: 512Mi
