@@ -23,6 +23,8 @@ c.MPILauncher.mpi_args = ["-hostfile", "/home/mpi/hosts"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
 c.IPClusterStart.delay = 10
+c.LocalEngineSetLauncher.delay = 0.2
+c.SSHEngineSetLauncher.delay = 0.2
 HOSTEOF
 
 cat > ~/.ipython/profile_mpi/ipengine_config.py << ENGEOF
@@ -43,4 +45,4 @@ done
 
 ipcluster stop --profile=mpi
 ipcluster stop
-ipcluster start -n ${NPROC} --profile=mpi --debug
+ipcluster start -n ${NPROC} --profile=mpi --daemonize --debug
