@@ -8,11 +8,6 @@ echo "# Scale mpi cluster                                   #"
 echo "#######################################################"
 echo ""
 
-oc scale dc mpi-master --replicas 0
-oc wait dc mpi --for condition=available
-oc scale dc mpi-master --replicas 1
-oc wait dc mpi --for condition=available
-
 oc scale dc mpi --replicas ${REP}
 oc wait dc mpi --for condition=available
 sleep $(echo "60 + $REP" | bc)
@@ -33,10 +28,13 @@ mpi_pods_ips=`echo "${mpi_pods}" | awk 'FNR > 1 {print $6}'`
 mpi_pods_count=`echo "${mpi_pods_ips}" | wc -l`
 mpi_pod_head=`echo "${mpi_pods_master}" | awk 'FNR > 1 {print $1}' | head -n 1`
 mpi_host_list=`echo "${mpi_pods_ips}" | tr '\n' ',' | sed 's/.$//'`
+mpi_pods_cpu=`oc get dc/${app_name} -o yaml | grep -A4 requests: | grep cpu: | cut -d'"' -f2`
+mpi_cpu_count=$(echo "${mpi_pods_count} * ${mpi_pods_cpu}"|bc )
 mpi_scripts_dir='/home/mpi/mpi-scripts'
 
 echo "Pod list: $(echo ${mpi_pods_names} | tr '\n' ' ')"
 echo "Pod count: ${mpi_pods_count}"
+echo "Nprocs count: ${mpi_cpu_count}"
 
 echo ""
 echo "#######################################################"
@@ -54,4 +52,4 @@ echo "#######################################################"
 echo "# Run reconfigure-mpi-cluster.sh in master            #"
 echo "#######################################################"
 echo ""
-oc rsh --request-timeout=3600 ${mpi_pod_head} bash ${mpi_scripts_dir}/reconfigure-mpi-cluster.sh "${mpi_master_ip}" "${mpi_pods_ips}" "${mpi_pods_count}"
+oc rsh --request-timeout=3600 ${mpi_pod_head} bash ${mpi_scripts_dir}/reconfigure-mpi-cluster.sh "${mpi_master_ip}" "${mpi_host_list}" "${mpi_pods_cpu}" "${mpi_cpu_count}"

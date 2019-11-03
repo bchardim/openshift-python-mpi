@@ -2,7 +2,8 @@
 
 MASTER_IP=$1
 WORKER_IPS=$2
-NPROC=$3
+SLOT=$3
+NPROC=$4
 
 echo ""
 echo "#######################################################"
@@ -49,7 +50,7 @@ CONEOF
 > /home/mpi/hosts 
 for i in $(echo "${WORKER_IPS}" | tr ',' '\n')
 do
-    echo "${i} slots=1" >> /home/mpi/hosts
+    echo "${i} slots=${SLOT}" >> /home/mpi/hosts
 done
 
 ipcluster start -n ${NPROC} --profile=mpi --debug
