@@ -36,7 +36,7 @@ $ bash scripts/create-config-maps-and-secrets.sh
 ```
 Create the OpenShift resources
 ```bash
-$ oc process -f mpi-template.yml -p MPI_BASE_IMAGE_URI=https://github.com/bchardim/openshift-python-mpi | oc create -f -
+$ oc process -f mpi-template.yml -p MPI_NUMBER_CPUS=2 -p MPI_MEMORY=1024Mi -p MPI_BASE_IMAGE_URI=https://github.com/bchardim/openshift-python-mpi | oc create -f -
 ```
 
 ### Run MPI Job
