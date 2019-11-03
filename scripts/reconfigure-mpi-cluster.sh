@@ -22,11 +22,11 @@ jupyter nbextension disable --py ipyparallel
 
 cat > ~/.ipython/profile_mpi/ipcluster_config.py << HOSTEOF
 c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
-c.MPILauncher.mpi_args = ["-v", "-hostfile", "/home/mpi/hosts", "-do-not-resolve", "--timeout", "600"]
+c.MPILauncher.mpi_args = ["-hostfile", "/home/mpi/hosts", "-do-not-resolve"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
 c.IPClusterStart.delay = 2
-c.LocalEngineSetLauncher.delay = 0.2
+c.LocalEngineSetLauncher.delay = 20
 c.IPClusterStart.early_shutdown = 60
 c.IPClusterStart.log_level = 30
 HOSTEOF
