@@ -2,12 +2,12 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: mpi-example
+  name: mpi-python
   annotations:
     iconClass: icon-python
     tags: instant-app,mpi
 labels:
-  template: mpi-example
+  template: mpi-python
 objects:
 - apiVersion: v1
   kind: ImageStream
