@@ -27,17 +27,23 @@ c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
 c.IPClusterStart.delay = 2
 c.LocalEngineSetLauncher.delay = 0.2
-c.SSHEngineSetLauncher.delay = 0.2
+c.IPClusterStart.early_shutdown = 60
+c.IPClusterStart.log_level = 30
 HOSTEOF
 
 cat > ~/.ipython/profile_mpi/ipengine_config.py << ENGEOF
-c.IPEngineApp.wait_for_url_file = 300
-c.EngineFactory.timeout = 300
+c.MPI.use = 'mpi4py'
+c.EngineFactory.ip = '${MASTER_IP}'
+c.IPEngineApp.wait_for_url_file = 30
+c.EngineFactory.timeout = 10
+c.IPEngineApp.log_level = 30
 ENGEOF
 
 cat > ~/.ipython/profile_mpi/ipcontroller_config.py  << CONEOF
 c.HubFactory.ip = '${MASTER_IP}'
-c.HubFactory.registration_timeout = 600
+c.HubFactory.registration_timeout = 30
+c.IPControllerApp.reuse_files = True
+c.IPControllerApp.log_level = 30
 CONEOF
 
 > /home/mpi/hosts 
