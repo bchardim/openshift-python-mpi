@@ -8,6 +8,11 @@ echo "# Scale mpi cluster                                   #"
 echo "#######################################################"
 echo ""
 
+oc scale dc mpi-master --replicas 0
+oc wait dc mpi --for condition=available
+oc scale dc mpi-master --replicas 1
+oc wait dc mpi --for condition=available
+
 oc scale dc mpi --replicas ${REP}
 oc wait dc mpi --for condition=available
 sleep $(echo "60 + $REP" | bc)

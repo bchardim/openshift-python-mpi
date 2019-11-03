@@ -10,7 +10,10 @@ echo "# Reconfigure mpi cluster                             #"
 echo "#######################################################"
 echo ""
 
+ipcluster stop --profile=mpi
+ipcluster stop
 rm -rf ~/.ipython/profile_mpi
+
 ipython3 profile create --parallel --profile=mpi
 jupyter serverextension enable --py ipyparallel
 # The following disables mpi cluster control from notebook
@@ -19,10 +22,10 @@ jupyter nbextension disable --py ipyparallel
 
 cat > ~/.ipython/profile_mpi/ipcluster_config.py << HOSTEOF
 c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
-c.MPILauncher.mpi_args = ["-hostfile", "/home/mpi/hosts"]
+c.MPILauncher.mpi_args = ["-v", "-hostfile", "/home/mpi/hosts", "-do-not-resolve", "--timeout", "600"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
-c.IPClusterStart.delay = 10
+c.IPClusterStart.delay = 2
 c.LocalEngineSetLauncher.delay = 0.2
 c.SSHEngineSetLauncher.delay = 0.2
 HOSTEOF
@@ -43,6 +46,4 @@ do
     echo "${i} slots=1" >> /home/mpi/hosts
 done
 
-ipcluster stop --profile=mpi
-ipcluster stop
-ipcluster start -n ${NPROC} --profile=mpi --daemonize --debug
+ipcluster start -n ${NPROC} --profile=mpi --debug
