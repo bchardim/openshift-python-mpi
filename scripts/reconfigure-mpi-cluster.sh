@@ -42,7 +42,7 @@ ENGEOF
 cat > ~/.ipython/profile_mpi/ipcontroller_config.py  << CONEOF
 c.HubFactory.ip = '${MASTER_IP}'
 c.HubFactory.registration_timeout = 30
-c.IPControllerApp.reuse_files = True
+###c.IPControllerApp.reuse_files = True
 c.IPControllerApp.log_level = 30
 CONEOF
 
