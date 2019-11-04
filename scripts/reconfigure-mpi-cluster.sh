@@ -50,7 +50,7 @@ CONEOF
 > /home/mpi/hosts 
 for i in $(echo "${WORKER_IPS}" | tr ',' '\n')
 do
-    echo "${i} slots=${SLOT}" >> /home/mpi/hosts
+    echo "${i} slots=${SLOT} max-slots=${SLOT}" >> /home/mpi/hosts
 done
 
 ipcluster start -n ${NPROC} --profile=mpi --debug
