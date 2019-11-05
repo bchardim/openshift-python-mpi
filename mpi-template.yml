@@ -70,8 +70,8 @@ objects:
             protocol: TCP
           resources:
             limits:
-              cpu: '${MPI_POD_CPU}'
-              memory: '${MPI_POD_MEMORY}'
+              cpu: '${MPI_POD_CPU_LIMIT}'
+              memory: '${MPI_POD_MEMORY_LIMIT}'
             requests:
               cpu: '${MPI_POD_CPU}'
               memory: '${MPI_POD_MEMORY}'
@@ -144,7 +144,7 @@ objects:
             protocol: TCP
           resources:
             limits:
-              cpu: '${MPI_POD_CPU}'
+              cpu: '${MPI_POD_CPU_LIMIT}'
               memory: 5Gi
             requests:
               cpu: '${MPI_POD_CPU}'
@@ -228,3 +228,9 @@ parameters:
 - name: MPI_POD_MEMORY
   description: Memory assigned to each mpi pod
   value: 512Mi
+- name: MPI_POD_CPU_LIMIT
+  description: Limit Number of CPUs assigned to each mpi pod
+  value: "2"
+- name: MPI_POD_MEMORY_LIMIT
+  description: Limit Memory assigned to each mpi pod
+  value: 1024Mi
