@@ -4,6 +4,7 @@ MASTER_IP=$1
 WORKER_IPS=$2
 SLOT=$3
 NPROC=$4
+CORES_PER_PROC=$5
 
 echo ""
 echo "#######################################################"
@@ -23,7 +24,7 @@ jupyter nbextension disable --py ipyparallel
 
 cat > ~/.ipython/profile_mpi/ipcluster_config.py << HOSTEOF
 c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
-c.MPILauncher.mpi_args = ["-hostfile", "/home/mpi/hosts", "-do-not-resolve"]
+c.MPILauncher.mpi_args = [ "-bind-to", "core", "--map-by", "ppr:${CORES_PER_PROC}:node:pe=${CORES_PER_PROC}", "-hostfile", "/home/mpi/hosts", "-do-not-resolve"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
 c.IPClusterStart.delay = 10

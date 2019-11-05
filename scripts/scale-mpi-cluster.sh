@@ -32,6 +32,12 @@ mpi_pods_cpu=`oc get dc/${app_name} -o yaml | grep -A4 requests: | grep cpu: | c
 mpi_cpu_count=$(echo "${mpi_pods_count} * ${mpi_pods_cpu}"|bc )
 mpi_scripts_dir='/home/mpi/mpi-scripts'
 
+#
+# Scale factor to be tunned - mpi_cpu_slot
+# For this environment we have 2 cores / proc
+#
+mpi_cores_per_proc=2
+
 echo "Pod list: $(echo ${mpi_pods_names} | tr '\n' ' ')"
 echo "Pod count: ${mpi_pods_count}"
 echo "Nprocs count: ${mpi_cpu_count}"
@@ -52,4 +58,4 @@ echo "#######################################################"
 echo "# Run reconfigure-mpi-cluster.sh in master            #"
 echo "#######################################################"
 echo ""
-oc rsh --request-timeout=3600 ${mpi_pod_head} bash ${mpi_scripts_dir}/reconfigure-mpi-cluster.sh "${mpi_master_ip}" "${mpi_host_list}" "${mpi_pods_cpu}" "${mpi_cpu_count}"
+oc rsh --request-timeout=3600 ${mpi_pod_head} bash ${mpi_scripts_dir}/reconfigure-mpi-cluster.sh "${mpi_master_ip}" "${mpi_host_list}" "${mpi_pods_cpu}" "${mpi_cpu_count}" "${mpi_cores_per_proc}"

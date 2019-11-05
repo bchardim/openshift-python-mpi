@@ -21,6 +21,12 @@ mpi_cpu_count=$(echo "${mpi_pods_count} * ${mpi_pods_cpu}"|bc )
 mpi_host_list=`echo ${mpi_host_list}|sed -E "s/,|$/:${mpi_pods_cpu},/mg"`
 mpi_scripts_dir='/home/mpi/mpi-scripts'
 
+#
+# Scale factor to be tunned - mpi_cpu_slot
+# For this environment we have 2 cores / proc
+#
+mpi_cores_per_proc=2
+
 echo "Pod list: $(echo ${mpi_pods_names} | tr '\n' ' ')"
 echo "Pod count: ${mpi_pods_count}"
 echo "Nprocs count: ${mpi_cpu_count}"
@@ -41,6 +47,6 @@ echo "#######################################################"
 echo "# Run mpi scripts in parallel on all pod              #"
 echo "#######################################################"
 echo ""
-mpi_opts="-np ${mpi_cpu_count} -mca btl ^openib -H ${mpi_host_list}"
+mpi_opts="-np ${mpi_cpu_count} -bind-to core --map-by ppr:${mpi_cores_per_proc}:node:pe=${mpi_cores_per_proc} -mca btl ^openib -H ${mpi_host_list}"
 echo "oc rsh --request-timeout=3600 ${mpi_pod_head} mpirun ${mpi_opts} ${mpi_scripts_dir}/$@"
 oc rsh --request-timeout=3600 ${mpi_pod_head} mpirun ${mpi_opts} ${mpi_scripts_dir}/$@
