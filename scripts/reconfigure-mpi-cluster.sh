@@ -2,9 +2,9 @@
 
 MASTER_IP=$1
 WORKER_IPS=$2
-SLOT=$3
-NPROC=$4
-CORES_PER_PROC=$5
+NTASK=$3
+SLOT=$4
+NTHREAD=$5
 
 echo ""
 echo "#######################################################"
@@ -24,7 +24,8 @@ jupyter nbextension disable --py ipyparallel
 
 cat > ~/.ipython/profile_mpi/ipcluster_config.py << HOSTEOF
 c.IPClusterEngines.engine_launcher_class = 'MPIEngineSetLauncher'
-c.MPILauncher.mpi_args = [ "-bind-to", "core", "--map-by", "ppr:${CORES_PER_PROC}:node:pe=${CORES_PER_PROC}", "-hostfile", "/home/mpi/hosts", "-do-not-resolve"]
+c.MPILauncher.mpi_args = [ "-np","${NTASK}","-bind-to", "core", "--map-by", "ppr:${SLOT}:node:pe=${NTHREAD}", "-hostfile", "/home/mpi/hosts", "-do-not-resolve"]
+###c.MPILauncher.mpi_args = [ "-hostfile", "/home/mpi/hosts", "-do-not-resolve"]
 c.MPILauncher.mpi_cmd = ['mpirun']
 c.MPIControllerLauncher.controller_args = ['--ip=${MASTER_IP}']
 c.IPClusterStart.delay = 10
@@ -51,7 +52,8 @@ CONEOF
 > /home/mpi/hosts 
 for i in $(echo "${WORKER_IPS}" | tr ',' '\n')
 do
-    echo "${i} slots=${SLOT} max-slots=${SLOT}" >> /home/mpi/hosts
+	echo "${i} slots=${SLOT} max-slots=${SLOT}" >> /home/mpi/hosts
 done
 
-ipcluster start -n ${NPROC} --profile=mpi --debug
+ipcluster start -n ${NTASK} --profile=mpi --debug
+
