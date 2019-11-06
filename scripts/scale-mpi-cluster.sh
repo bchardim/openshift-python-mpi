@@ -47,7 +47,8 @@ echo ""
 
 # Core hyperthreading
 # Set number of threats per worker core
-mpi_core_thread=1
+# mpi_core_thread=1 # for overcommited OCP clusters, only 2 worker cpus are used
+mpi_core_thread=2 # to force load distribution accros all worker cpus 
 
 # Calculate number of tasks [-np]
 mpi_np_count=$((${mpi_pods_count}*${mpi_pods_cpu}*${mpi_core_thread}))

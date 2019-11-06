@@ -35,13 +35,15 @@ echo ""
 
 # Core hyperthreading
 # Set number of threats per worker core
-mpi_core_thread=1
+# mpi_core_thread=1 # for overcommited OCP clusters, only 2 worker cpus are used
+mpi_core_thread=2 # to force load distribution accros all worker cpus 
 
 # Calculate number of tasks [-np]
 mpi_np_count=$((${mpi_pods_count}*${mpi_pods_cpu}*${mpi_core_thread}))
 
 # Calculate number of slot per node [slot=]
 mpi_slot_count=$((${mpi_pods_cpu}*${mpi_core_thread}))
+
 mpi_host_list=`echo ${mpi_host_list}|sed -E "s/,|$/:${mpi_slot_count},/mg"`
 
 echo "Pod list:           $(echo ${mpi_pods_names} | tr '\n' ' ')"

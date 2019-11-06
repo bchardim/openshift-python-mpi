@@ -36,12 +36,12 @@ $ bash scripts/create-config-maps-and-secrets.sh
 ```
 Create the OpenShift resources
 ```bash
-$ oc process -f mpi-template.yml -p MPI_POD_CPU=2 -p MPI_POD_CPU_LIMIT=4 -p MPI_POD_MEMORY=1024Mi -p MPI_POD_MEMORY_LIMIT=2048Mi -p MPI_BASE_IMAGE_URI=https://github.com/bchardim/openshift-python-mpi | oc create -f -
+$ oc process -f mpi-template.yml -p MPI_POD_CPU=1 -p MPI_POD_CPU_LIMIT=2 -p MPI_POD_MEMORY=512Mi -p MPI_POD_MEMORY_LIMIT=1024Mi -p MPI_BASE_IMAGE_URI=https://github.com/bchardim/openshift-python-mpi | oc create -f -
 ```
 
 ### Run MPI Job
 
-Run a sample job against 5 mpi pods + master (6x2 = 12 procs)
+Run a sample job against 5 mpi pods + master (= 6 mpi pods)
 ```bash
 $ oc scale dc mpi --replicas 5
 $ oc wait dc mpi --for condition=available
@@ -52,7 +52,7 @@ $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
 $ oc scale dc mpi --replicas 1
 ```
 
-Calculate pi using 12000000 points against 5 mpi pods + master (6x2 = 12 procs)
+Calculate pi using 12000000 points against 5 mpi pods + master (= 6 mpi pods)
 ```bash
 $ oc scale dc mpi --replicas 5
 $ oc wait dc mpi --for condition=available
