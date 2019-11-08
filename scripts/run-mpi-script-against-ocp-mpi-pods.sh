@@ -33,10 +33,9 @@ echo ""
 #         |number of tasks                         | to run 2 tasks per node each tasks with 4 threads
 #
 
-# Core hyperthreading
 # Set number of threats per worker core
-# mpi_core_thread=1 # for overcommited OCP clusters, only 2 worker cpus are used
-mpi_core_thread=2 # to force load distribution accros all worker cpus 
+# mpi_core_thread=2 # for overcommited OCP clusters
+mpi_core_thread=4   # to force load distribution across all worker cpus 
 
 # Calculate number of tasks [-np]
 mpi_np_count=$((${mpi_pods_count}*${mpi_pods_cpu}*${mpi_core_thread}))
