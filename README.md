@@ -58,7 +58,7 @@ $ oc scale dc mpi --replicas 5
 $ oc wait dc mpi --for condition=available
 
 $ cd scripts
-$ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 12000000
+$ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 18000000
 ...
 ...
 Calculated pi is 3.1415404000, error is 0.0000522536
