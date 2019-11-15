@@ -52,7 +52,7 @@ $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
 $ oc scale dc mpi --replicas 1
 ```
 
-Calculate pi using 12000000 points against 5 mpi pods + master (= 6 mpi pods)
+Calculate pi using 18000000 points against 5 mpi pods + master (= 6 mpi pods)
 ```bash
 $ oc scale dc mpi --replicas 5
 $ oc wait dc mpi --for condition=available
