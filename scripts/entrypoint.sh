@@ -44,7 +44,7 @@ cp -H "${temp_mpi_identity_dir}/"* "${mpi_home_dir}/.ssh/"
 chmod 600 "${mpi_home_dir}/.ssh/"*
 
 echo 'Copy notebooks files'
-cp -H "${temp_notebooks_dir}/"* "${mpi_home_dir}/notebooks/"
+cp -rH "${temp_notebooks_dir}/"* "${mpi_home_dir}/notebooks/"
 chmod 700 "${mpi_home_dir}/notebooks/"
 
 echo 'Set home directory permisions and env'
