@@ -56,7 +56,7 @@ RUN chmod 750 /entrypoint.sh
 COPY etc/environment /etc/environment
 
 USER mpi
-COPY --chown=mpi:root notebooks/ notebooks/
+COPY --chown=mpi:root notebooks/ /notebooks/
 EXPOSE 2022 8888
 
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/openmpi/bin/"
