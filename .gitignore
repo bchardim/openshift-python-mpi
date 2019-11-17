@@ -1,2 +1,5 @@
 howto.txt
 ssh/
+notebooks/ml_classify-qsos/__pycache__/
+notebooks/ml_classify-qsos/.ipynb_checkpoints/
+notebooks/pi_calc/.ipynb_checkpoints/
