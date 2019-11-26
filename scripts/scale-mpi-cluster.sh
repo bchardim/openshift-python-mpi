@@ -10,7 +10,7 @@ echo ""
 
 oc scale dc mpi --replicas ${REP}
 oc wait dc mpi --for condition=available --timeout=300s
-sleep $(echo "60 + 2*$REP" | bc)
+sleep $(echo "60 + 1*$REP" | bc)
 
 echo ""
 echo "#######################################################"

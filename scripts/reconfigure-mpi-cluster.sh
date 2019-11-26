@@ -38,13 +38,13 @@ cat > ~/.ipython/profile_mpi/ipengine_config.py << ENGEOF
 c.MPI.use = 'mpi4py'
 c.EngineFactory.ip = '${MASTER_IP}'
 c.IPEngineApp.wait_for_url_file = 30
-c.EngineFactory.timeout = 30
+c.EngineFactory.timeout = 60
 c.IPEngineApp.log_level = 30
 ENGEOF
 
 cat > ~/.ipython/profile_mpi/ipcontroller_config.py  << CONEOF
 c.HubFactory.ip = '${MASTER_IP}'
-c.HubFactory.registration_timeout = 30
+c.HubFactory.registration_timeout = 60
 ###c.IPControllerApp.reuse_files = True
 c.IPControllerApp.log_level = 30
 CONEOF
@@ -55,5 +55,6 @@ do
 	echo "${i} slots=${SLOT} max-slots=${SLOT}" >> /home/mpi/hosts
 done
 
-ipcluster start -n ${NTASK} --profile=mpi --debug
+echo "Running 'ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug' ... logs at .ipython/profile_mpi/log ..."
+ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug
 
