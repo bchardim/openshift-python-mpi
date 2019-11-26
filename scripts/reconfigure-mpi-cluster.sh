@@ -55,6 +55,6 @@ do
 	echo "${i} slots=${SLOT} max-slots=${SLOT}" >> /home/mpi/hosts
 done
 
-echo "Running 'ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug' ... logs at .ipython/profile_mpi/log ..."
+echo "Running 'ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug' [Log: .ipython/profile_mpi/log]"
 ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug
 
