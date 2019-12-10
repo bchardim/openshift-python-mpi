@@ -155,7 +155,7 @@ objects:
           - mountPath: /.ipython 
             name: nfs-mpi-vol
           - mountPath: /.ipython/profile_mpi
-            name: profile-mpi  
+            name: profilempi  
         volumes:
         - name: nfs-mpi-vol
           persistentVolumeClaim:
@@ -182,7 +182,7 @@ objects:
                 - key: ssh-config
                   mode: 0600
                   path: config
-        - name: profile-mpi
+        - name: profilempi
           projected:
             defaultMode: 0770
             sources:
