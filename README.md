@@ -31,6 +31,7 @@ nfs-pvc-mpi   Bound    nfs-pv-mpi   2Gi        RWX                           3s
 
 Create the SSH information
 ```bash
+$ bash scripts/generate-mpi-configs.sh
 $ bash scripts/generate-ssh-configs.sh
 $ bash scripts/create-config-maps-and-secrets.sh
 ```
