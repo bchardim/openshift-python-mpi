@@ -59,7 +59,7 @@ jupyter serverextension enable --py ipyparallel
 jupyter nbextension disable --py ipyparallel
 
 # Create mpi config from configmaps
-for file in $(ls -1 $CMAP_DIR{}/)
+for file in $(ls -1 $CMAP_DIR/)
 do
     sed -e 's/_MASTER_IP_/${MASTER_IP}/' ${CMAP_DIR}/$file > ${PROF_DIR}/$file
     sed -e 's/_NTASK_/${NP_COUNT}/' ${CMAP_DIR}/$file > ${PROF_DIR}/$file
