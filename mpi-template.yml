@@ -64,6 +64,9 @@ objects:
         containers:
         - name: mpi
           image: 'mpi-base'
+          env:
+            - name: MPI_CPU_THREAD 
+              value: ${MPI_CPU_THREAD}        
           imagePullPolicy: Always
           ports:
           - containerPort: 2022
@@ -134,9 +137,6 @@ objects:
           deploymentconfig: mpi-master
       spec:
         containers:
-        - env:
-          - name: MPI_CPU_THREAD
-            value:  ${MPI_CPU_THREAD}       
         - name: mpi-master
           image: 'mpi-base'
           imagePullPolicy: Always
