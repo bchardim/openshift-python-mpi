@@ -18,21 +18,21 @@ echo ""
 #
 
 # Get mpi master pod ip
-MASTER_IP=$(grep $(cat /etc/hostname) /etc/hosts | awk -F" " '{print $1}')
+MASTER_IP=$(grep ${HOSTNAME} /etc/hosts | awk -F" " '{print $1}')
 
 # Set number of threats per worker core
-# NTHREAD_ENV=2 # for overcommited OCP clusters, only 2 worker cpus are used
-# NTHREAD_ENV=3 # to force load distribution across all worker cpus 
+# MPI_CPU_THREAD=2 # for overcommited OCP clusters, only 2 worker cpus are used
+# MPI_CPU_THREAD=3 # to force load distribution across all worker cpus 
 
 # Calculate number of PODs running in mpi cluster
-POD_COUNT=$(dig ${MPI_SVC_ENV} A +search +short | wc -l)
-POD_LIST=$(dig ${MPI_SVC_ENV} A +search +short | tr '\n' ',' | sed 's/.$//')
+POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
+POD_LIST=$(dig ${MPI_SVC} A +search +short | tr '\n' ',' | sed 's/.$//')
 
 # Calculate number of tasks [-np]
-NP_COUNT=$((${POD_COUNT}*${POD_CPU_ENV}*${NTHREAD}))
+NP_COUNT=$((${POD_COUNT}*${MPI_POD_CPU}*${MPI_CPU_THREAD}))
 
 # Calculate number of slot per node [slot=]
-SLOT=$((${POD_CPU_ENV}*${NTHREAD_ENV}))
+SLOT=$((${MPI_POD_CPU}*${MPI_CPU_THREAD}))
 
 echo "Pod list:           $(echo ${POD_LIST} | tr '\n' ' ')"
 echo "Pod count:          ${POD_COUNT}"

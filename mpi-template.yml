@@ -64,9 +64,6 @@ objects:
         containers:
         - name: mpi
           image: 'mpi-base'
-          env:
-            - name: MPI_CPU_THREAD 
-              value: ${MPI_CPU_THREAD}        
           imagePullPolicy: Always
           ports:
           - containerPort: 2022
@@ -139,6 +136,13 @@ objects:
         containers:
         - name: mpi-master
           image: 'mpi-base'
+          env:
+            - name: MPI_CPU_THREAD
+              value: ${MPI_CPU_THREAD}
+            - name: MPI_POD_CPU
+              value: ${MPI_POD_CPU}
+            - name: MPI_SVC
+              value: ${MPI_SVC}              
           imagePullPolicy: Always
           ports:
           - containerPort: 2022
@@ -228,7 +232,7 @@ objects:
   metadata:
     labels:
       app: mpi
-    name: mpi-svc
+    name: '${MPI_SVC}'
   spec:
     clusterIP: None       
     ports:
@@ -274,4 +278,6 @@ parameters:
 - name: MPI_CPU_THREAD
   description: Number of thread per CPU assigned to each mpi pod
   value: "3"
-  
+- name: MPI_SVC
+  description: MPI headless service name
+  value: mpi-svc
