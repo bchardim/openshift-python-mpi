@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Reading number of mpi replicas
-NTASK=$(cat /.ipython/replicas)
-
 echo ""
 echo "#######################################################"
 echo "# Generating MPI config                               #"
@@ -45,22 +42,39 @@ echo "# Reconfigure mpi cluster                             #"
 echo "#######################################################"
 echo ""
 
+# Profile config
+CMAP_DIR=/.ipython/configmap
+PROF_DIR=/.ipython/profile_mpi
+
+# Stop mpi cluster
 ipcluster stop --profile=mpi
 ipcluster stop
 rm -rf ~/.ipython/profile_mpi
 
+# Create mpi cluster profile
 ipython3 profile create --parallel --profile=mpi
 jupyter serverextension enable --py ipyparallel
 # The following disables mpi cluster control from notebook
 # We prefear mpi cluster control from OCP
 jupyter nbextension disable --py ipyparallel
 
+# Create mpi config from configmaps
+for file in $(ls -1 $CMAP_DIR{}/)
+do
+    sed -e 's/_MASTER_IP_/${MASTER_IP}/' ${CMAP_DIR}/$file > ${PROF_DIR}/$file
+    sed -e 's/_NTASK_/${NP_COUNT}/' ${CMAP_DIR}/$file > ${PROF_DIR}/$file
+    sed -e 's/_SLOT_/${SLOT}/' ${CMAP_DIR}/$file > ${PROF_DIR}/$file
+    sed -e 's/_NTHREAD_/${MPI_CPU_THREAD}/' ${CMAP_DIR}/$file > ${PROF_DIR}/$file
+done
+
+# Create mpi host file
 > /home/mpi/hosts 
 for i in $(echo "${POD_LIST}" | tr ',' '\n')
 do
 	echo "${i} slots=${SLOT} max-slots=${SLOT}" >> /home/mpi/hosts
 done
 
-echo "Running 'ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug' [Log: .ipython/profile_mpi/log]"
-ipcluster start -n ${NTASK} --profile=mpi --log-to-file --debug
+# Run mpi cluster
+echo "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug' [Log: .ipython/profile_mpi/log]"
+ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug
 

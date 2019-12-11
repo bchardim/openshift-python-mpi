@@ -51,7 +51,8 @@ RUN sed -i "s/#PasswordAuthentication yes/PasswordAuthentication no/" /etc/ssh/s
     chmod 775 /.ipython && \
     cat /etc/passwd
 
-COPY scripts/entrypoint.sh  /entrypoint.sh
+COPY scripts/entrypoint.sh /entrypoint.sh
+COPY scripts/configure-mpi-cluster.sh /configure-mpi-cluster.sh
 
 RUN chmod 750 /entrypoint.sh 
 COPY etc/environment /etc/environment

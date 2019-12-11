@@ -161,7 +161,7 @@ objects:
             name: mpi-ssh
           - mountPath: /.ipython 
             name: nfs-mpi-vol
-          - mountPath: /.ipython/profile_mpi
+          - mountPath: /.ipython/configmap
             name: profile-mpi  
         volumes:
         - name: nfs-mpi-vol
