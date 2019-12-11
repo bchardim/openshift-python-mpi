@@ -134,6 +134,9 @@ objects:
           deploymentconfig: mpi-master
       spec:
         containers:
+        - env:
+          - name: MPI_CPU_THREAD
+            value:  ${MPI_CPU_THREAD}       
         - name: mpi-master
           image: 'mpi-base'
           imagePullPolicy: Always
@@ -254,7 +257,7 @@ parameters:
 - name: MPI_BASE_IMAGE_URI
   description: URI to the git project contianing the saml-service-provider image definintion
 - name: MPI_BASE_IMAGE_REF
-  description: Git ref contianing the saml-service-provider image definintion
+  description: Git ref contianing the image definintion
   value: master
 - name: MPI_POD_CPU
   description: Number of CPUs assigned to each mpi pod
@@ -268,3 +271,7 @@ parameters:
 - name: MPI_POD_MEMORY_LIMIT
   description: Limit Memory assigned to each mpi pod
   value: 1024Mi
+- name: MPI_CPU_THREAD
+  description: Number of thread per CPU assigned to each mpi pod
+  value: "3"
+  
