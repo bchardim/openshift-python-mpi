@@ -60,7 +60,7 @@ jupyter nbextension disable --py ipyparallel
 # Create mpi config from configmaps
 for file in $(ls -1 $CMAP_DIR/)
 do
-    cat ${CMAP_DIR}/${file} | sed -e 's/_MASTER_IP_/${MASTER_IP}/' -e 's/_NTASK_/${NP_COUNT}/' -e 's/_SLOT_/${SLOT}/' -e 's/_NTHREAD_/${MPI_CPU_THREAD}/' > ${PROF_DIR}/${file}
+    cat ${CMAP_DIR}/${file} | sed -e "s/_MASTER_IP_/${MASTER_IP}/" -e "s/_NTASK_/${NP_COUNT}/" -e "s/_SLOT_/${SLOT}/" -e "s/_NTHREAD_/${MPI_CPU_THREAD}/" > ${PROF_DIR}/${file}
 done
 
 # Create mpi host file
