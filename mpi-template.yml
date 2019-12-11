@@ -239,8 +239,7 @@ objects:
       - port: 8889
         targetPort: 8889
     selector:
-    matchExpressions:
-      - {key: app, operator: In, values: [mpi,mpi-master]}        
+      app: mpi        
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
