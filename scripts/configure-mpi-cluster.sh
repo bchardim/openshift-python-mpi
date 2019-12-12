@@ -17,7 +17,15 @@ do
     PROF_DIR=/.ipython/profile_mpi
     HOST_FL=/home/mpi/hosts
     REPL_FL=${PROF_DIR}/replicas
-    touch ${HOST_FL}
+    MPI_RECONFIG=0 
+    touch ${HOST_FL} && date
+
+
+    echo ""
+    echo "#######################################################"
+    echo "# Check if MPI cluster needs reconfiguration          #"
+    echo "#######################################################"
+    echo ""
 
     # Calculate number of PODs running in mpi cluster
     POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
@@ -26,12 +34,29 @@ do
     HOST_COUNT=$(cat ${HOST_FL} | wc -l)
     echo "Calculated HOST_COUNT: '${HOST_COUNT}'"
 
-    # Control loop 
-    if [ "${POD_COUNT}" == "${HOST_COUNT}" ]
+    # Check all mpi nodes are in host file
+    for mpi in $(echo "${POD_LIST}" | tr ',' '\n')
+    do
+    	if [ $(grep -c "${mpi}" ${HOST_FL}) -eq 0 ]
+        then		
+	  MPI_RECONFIG=1   	
+          echo "WARNING: MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
+	fi  
+    done
+
+    # Check POD_COUNT and HOST_COUNT are equal
+    if [ "${POD_COUNT}" != "${HOST_COUNT}" ]
     then
-	echo "MPI cluster do NOT need reconfiguration, POD_COUNT: '${POD_COUNT}' == HOST_COUNT: '${HOST_COUNT}'"    
-        continue	
+	MPI_RECONFIG=1    
+	echo "WARNING: POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
     fi		
+
+    # Loop control
+    if [ ${MPI_RECONFIG} -eq 0 ]
+    then
+        echo "MPI cluster does NOT need reconfiguration."
+	continue
+    fi	    
 
     echo ""
     echo "#######################################################"
