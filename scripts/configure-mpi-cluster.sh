@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Redirect script output to logs
-exec > /configure-mpi-cluster.log
+exec > /.ipython/profile_mpi/configure-mpi-cluster.log
 exec 2>&1
 
 
@@ -17,6 +17,7 @@ do
     PROF_DIR=/.ipython/profile_mpi
     HOST_FL=/home/mpi/hosts
     REPL_FL=${PROF_DIR}/replicas
+    touch ${HOST_FL}
 
     # Calculate number of PODs running in mpi cluster
     POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
