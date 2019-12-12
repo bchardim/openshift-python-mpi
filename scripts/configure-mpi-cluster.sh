@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Redirect script output to logs
-exec &> /.ipython/profile_mpi/configure-mpi-cluster.log
-
-
 while true    
 do
 
