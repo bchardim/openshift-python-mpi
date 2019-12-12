@@ -30,7 +30,6 @@ openssh-server \
 openssh-clients \
 openssl-libs \
 bind-utils \
-&& dnf reinstall -y tzdata \ 
 && microdnf update \
 && microdnf clean all \
 && rm -rf /var/cache/yum \
