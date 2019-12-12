@@ -276,7 +276,7 @@ parameters:
   value: 1024Mi
 - name: MPI_CPU_THREAD
   description: Number of thread per CPU assigned to each mpi pod
-  value: "3"
+  value: "2"
 - name: MPI_SVC
   description: MPI headless service name
   value: mpi-svc
