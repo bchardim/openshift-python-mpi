@@ -91,13 +91,10 @@ do
 
     # Run mpi cluster
     echo "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug' [Log: .ipython/profile_mpi/log]"
-    ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug
+    nohup ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug &
 
     # Check result and update replicas
-    if [ $? -eq 0 ]
-    then	    
-        echo ${POD_COUNT} > ${REPL_FL}
-    fi
+    echo ${POD_COUNT} > ${REPL_FL}
 
 
 done
