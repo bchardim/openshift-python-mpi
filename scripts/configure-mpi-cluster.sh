@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Redirect script output to logs
-exec > /.ipython/profile_mpi/log/configure-mpi-cluster.log
+exec &> /.ipython/profile_mpi/log/configure-mpi-cluster.log
 
 
 while true    
@@ -100,6 +100,9 @@ do
     echo "# Reconfigure mpi cluster                             #"
     echo "#######################################################"
     echo ""
+
+    # Grace period for deployment
+    sleep ${POD_COUNT}
 
     # Stop mpi cluster
     ipcluster stop --profile=mpi
