@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Redirect script output to logs
-exec > /.ipython/profile_mpi/configure-mpi-cluster.log
-exec 2>&1
+exec > /.ipython/profile_mpi/log/configure-mpi-cluster.log
 
 
 while true    
@@ -18,8 +17,7 @@ do
     HOST_FL=/home/mpi/hosts
     REPL_FL=${PROF_DIR}/replicas
     MPI_RECONFIG=0 
-    touch ${HOST_FL} && date
-
+    date
 
     echo ""
     echo "#######################################################"
@@ -35,6 +33,7 @@ do
     echo "Calculated HOST_COUNT: '${HOST_COUNT}'"
 
     # Check all mpi nodes are in host file
+    touch ${HOST_FL}
     for mpi in $(echo "${POD_LIST}" | tr ',' '\n')
     do
     	if [ $(grep -c "${mpi}" ${HOST_FL}) -eq 0 ]
@@ -50,6 +49,16 @@ do
 	MPI_RECONFIG=1    
 	echo "WARNING: POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
     fi		
+
+    # Check mpi cluster is running
+    mkdir -p ${PROF_DIR}/pid && touch ${MPI_PID}
+    MPI_PID=$(cat ${PROF_DIR}/pid/ipcluster.pid)
+    MPI_PS_PID=$(pgrep ipcluster)
+    if [ "${MPI_PID}" != "${MPI_PS_PID}" ]
+    then
+        MPI_RECONFIG=1
+        echo "WARNING: MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
+    fi
 
     # Loop control
     if [ ${MPI_RECONFIG} -eq 0 ]
@@ -121,4 +130,3 @@ do
 
 
 done
-
