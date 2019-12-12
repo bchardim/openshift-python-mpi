@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Redirect script output to logs
+exec > /configure-mpi-cluster.log
+exec 2>&1
 
 
 while true    
@@ -18,19 +21,16 @@ do
     # Calculate number of PODs running in mpi cluster
     POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
     POD_LIST=$(dig ${MPI_SVC} A +search +short | tr '\n' ',' | sed 's/.$//')
+    echo "Calculated POD_COUNT: '${POD_COUNT}'"
+    HOST_COUNT=$(cat ${HOST_FL} | wc -l)
+    echo "Calculated HOST_COUNT: '${HOST_COUNT}'"
 
     # Control loop 
-    # Check for cluster changes at PROF_DIR
-    if [ -f ${REPL_FL} ] 
+    if [ "${POD_COUNT}" == "${HOST_COUNT}" ]
     then
-        REPLICAS=$(cat ${REPL_FL})
-	if [ "${REPLICAS}" == "${POD_COUNT}" ]
-        then
-	    continue	
-        fi		
-    else
-        echo ${POD_COUNT} > ${REPL_FL}
-    fi	    
+	echo "MPI cluster do NOT need reconfiguration, POD_COUNT: '${POD_COUNT}' == HOST_COUNT: '${HOST_COUNT}'"    
+        continue	
+    fi		
 
     echo ""
     echo "#######################################################"
@@ -92,9 +92,6 @@ do
     # Run mpi cluster
     echo "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug' [Log: .ipython/profile_mpi/log]"
     nohup ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug &
-
-    # Check result and update replicas
-    echo ${POD_COUNT} > ${REPL_FL}
 
 
 done
