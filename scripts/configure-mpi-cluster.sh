@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Redirect script output to logs
-exec &> /.ipython/profile_mpi/log/configure-mpi-cluster.log
+exec &> /.ipython/profile_mpi/configure-mpi-cluster.log
 
 
 while true    
@@ -26,6 +26,7 @@ do
     echo ""
 
     # Calculate number of PODs running in mpi cluster
+    touch ${HOST_FL}
     POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
     POD_LIST=$(dig ${MPI_SVC} A +search +short | tr '\n' ',' | sed 's/.$//')
     echo "Calculated POD_COUNT: '${POD_COUNT}'"
@@ -33,7 +34,6 @@ do
     echo "Calculated HOST_COUNT: '${HOST_COUNT}'"
 
     # Check all mpi nodes are in host file
-    touch ${HOST_FL}
     for mpi in $(echo "${POD_LIST}" | tr ',' '\n')
     do
     	if [ $(grep -c "${mpi}" ${HOST_FL}) -eq 0 ]
