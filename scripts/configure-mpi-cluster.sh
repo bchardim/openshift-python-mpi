@@ -22,8 +22,10 @@ MASTER_IP=$(grep ${HOSTNAME} /etc/hosts | awk -F" " '{print $1}')
 # MPI_CPU_THREAD=3 # to force load distribution across all worker cpus 
 
 # Calculate number of PODs running in mpi cluster
-POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
+#POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
 POD_LIST=$(dig ${MPI_SVC} A +search +short | tr '\n' ',' | sed 's/.$//')
+POD_LIST=${MASTER_IP}","${POD_LIST}
+POD_COUNT=$(echo ${POD_LIST} | tr ',' '\n' | wc -l)
 
 # Calculate number of tasks [-np]
 NP_COUNT=$((${POD_COUNT}*${MPI_POD_CPU}*${MPI_CPU_THREAD}))
