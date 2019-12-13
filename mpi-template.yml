@@ -136,6 +136,13 @@ objects:
         containers:
         - name: mpi-master
           image: 'mpi-base'
+          env:
+            - name: MPI_CPU_THREAD
+              value: ${MPI_CPU_THREAD}
+            - name: MPI_POD_CPU
+              value: ${MPI_POD_CPU}
+            - name: MPI_SVC
+              value: ${MPI_SVC}              
           imagePullPolicy: Always
           ports:
           - containerPort: 2022
@@ -154,6 +161,8 @@ objects:
             name: mpi-ssh
           - mountPath: /.ipython 
             name: nfs-mpi-vol
+          - mountPath: /.ipython/configmap
+            name: profile-mpi  
         volumes:
         - name: nfs-mpi-vol
           persistentVolumeClaim:
@@ -180,6 +189,22 @@ objects:
                 - key: ssh-config
                   mode: 0600
                   path: config
+        - name: profile-mpi
+          projected:
+            defaultMode: 0770
+            sources:
+            - configMap:
+                name: mpi-cluster-config
+                items:
+                - key: mpi-ipcluster-config
+                  mode: 0775
+                  path: ipcluster_config.py
+                - key: mpi-ipengine-config
+                  mode: 0775
+                  path: ipengine_config.py
+                - key: mpi-ipcontroller-config
+                  mode: 0775
+                  path: ipcontroller_config.py
     triggers:
     - type: ConfigChange
     - imageChangeParams:
@@ -203,6 +228,21 @@ objects:
     selector:
       app: mpi-master
 - apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: mpi
+    name: '${MPI_SVC}'
+  spec:
+    clusterIP: None       
+    ports:
+      - port: 8889
+        targetPort: 8889
+    selector:
+      app: mpi        
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
   kind: Route
   metadata:
     labels:
@@ -220,7 +260,7 @@ parameters:
 - name: MPI_BASE_IMAGE_URI
   description: URI to the git project contianing the saml-service-provider image definintion
 - name: MPI_BASE_IMAGE_REF
-  description: Git ref contianing the saml-service-provider image definintion
+  description: Git ref contianing the image definintion
   value: master
 - name: MPI_POD_CPU
   description: Number of CPUs assigned to each mpi pod
@@ -234,3 +274,9 @@ parameters:
 - name: MPI_POD_MEMORY_LIMIT
   description: Limit Memory assigned to each mpi pod
   value: 1024Mi
+- name: MPI_CPU_THREAD
+  description: Number of thread per CPU assigned to each mpi pod
+  value: "2"
+- name: MPI_SVC
+  description: MPI headless service name
+  value: mpi-svc

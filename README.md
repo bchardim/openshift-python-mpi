@@ -29,8 +29,9 @@ NAME          STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 nfs-pvc-mpi   Bound    nfs-pv-mpi   2Gi        RWX                           3s
 ```
 
-Create the SSH information
+Create needed ConfigMaps and Secrets
 ```bash
+$ bash scripts/generate-mpi-configs.sh
 $ bash scripts/generate-ssh-configs.sh
 $ bash scripts/create-config-maps-and-secrets.sh
 ```
@@ -41,30 +42,42 @@ $ oc process -f mpi-template.yml -p MPI_POD_CPU=1 -p MPI_POD_CPU_LIMIT=2 -p MPI_
 
 ### Run MPI Job
 
-Run a sample job against 5 mpi pods + master (= 6 mpi pods)
+Run a sample job against  6 mpi pod cluster
 ```bash
-$ oc scale dc mpi --replicas 5 && oc wait dc mpi --for condition=available
+$ oc scale dc mpi --replicas 6 && oc wait dc mpi --for condition=available
 
 $ cd scripts
 $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
-
-$ oc scale dc mpi --replicas 1
 ```
 
-Calculate pi using 18000000 points against 5 mpi pods + master (= 6 mpi pods)
+Calculate pi using 18000000 points against 6 mpi pod cluster
 ```bash
-$ oc scale dc mpi --replicas 5 && oc wait dc mpi --for condition=available
+$ oc scale dc mpi --replicas 6 && oc wait dc mpi --for condition=available
 
 $ cd scripts
 $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 18000000
 ...
 ...
 Calculated pi is 3.1415404000, error is 0.0000522536
-
-$ oc scale dc mpi --replicas 1
 ```
 
 
+### Run MPI/ipyparallel Job using Jupyter Notebook
+
+Get project route
+```bash
+$ oc get routes
+NAME               HOST/PORT                        PATH   SERVICES         PORT    TERMINATION   WILDCARD
+mpi-master-route   gw-learning.apps.ocp4.info.net          mpi-master-svc   <all>   edge          None
+```
+
+Execute sample notebook that calculates pi in parallel against your mpi cluster deployed on Openshift.
+
+https://gw-learning.apps.ocp4.info.net/notebooks/notebooks/pi_calc/pi_calc.ipynb 
+
+![](images/pi_notebook.png)
+
+Enjoy !
 
 ## References
 https://github.com/itewk/openshift-mpi-example

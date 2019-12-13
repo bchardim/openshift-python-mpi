@@ -10,7 +10,6 @@ echo ""
 app_name=mpi
 mpi_pods=`oc get pod -l app=${app_name} -o wide`
 mpi_pods_master=`oc get pod -l app=${app_name}-master -o wide`
-mpi_pods=${mpi_pods_master}${mpi_pods}
 mpi_pods_names=`echo "${mpi_pods}" | awk 'FNR > 1 {print $1}'`
 mpi_pods_ips=`echo "${mpi_pods}" | awk 'FNR > 1 {print $6}'`
 mpi_pods_count=`echo "${mpi_pods_ips}" | wc -l`
@@ -35,7 +34,7 @@ echo ""
 
 # Set number of threats per worker core
 # mpi_core_thread=2 # for overcommited OCP clusters
-mpi_core_thread=3   # to force load distribution across all worker cpus 
+mpi_core_thread=2   # to force load distribution across all worker cpus 
 
 # Calculate number of tasks [-np]
 mpi_np_count=$((${mpi_pods_count}*${mpi_pods_cpu}*${mpi_core_thread}))
@@ -55,7 +54,7 @@ echo "#######################################################"
 echo "# Rsync mpi script to all pods                        #"
 echo "#######################################################"
 echo ""
-for mpi_pod in ${mpi_pods_names}; do
+for mpi_pod in ${mpi_pod_head} ${mpi_pods_names}; do
   echo "${mpi_pod}"
   oc rsync `dirname $1` ${mpi_pod}:${mpi_scripts_dir}
   echo
