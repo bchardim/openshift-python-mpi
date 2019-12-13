@@ -42,29 +42,27 @@ $ oc process -f mpi-template.yml -p MPI_POD_CPU=1 -p MPI_POD_CPU_LIMIT=2 -p MPI_
 
 ### Run MPI Job
 
-Run a sample job against 5 mpi pods + master (= 6 mpi pods)
+Run a sample job against  6 mpi pod cluster
 ```bash
-$ oc scale dc mpi --replicas 5 && oc wait dc mpi --for condition=available
+$ oc scale dc mpi --replicas 6 && oc wait dc mpi --for condition=available
 
 $ cd scripts
 $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/mpi-hello-world.py
-
-$ oc scale dc mpi --replicas 1
 ```
 
-Calculate pi using 18000000 points against 5 mpi pods + master (= 6 mpi pods)
+Calculate pi using 18000000 points against 6 mpi pod cluster
 ```bash
-$ oc scale dc mpi --replicas 5 && oc wait dc mpi --for condition=available
+$ oc scale dc mpi --replicas 6 && oc wait dc mpi --for condition=available
 
 $ cd scripts
 $ ./run-mpi-script-against-ocp-mpi-pods.sh mpi/pi_mpi_calc.py 18000000
 ...
 ...
 Calculated pi is 3.1415404000, error is 0.0000522536
-
-$ oc scale dc mpi --replicas 1
 ```
 
+
+### Run MPI/ipyparallel Job using Jypiter Notebook
 
 
 ## References
