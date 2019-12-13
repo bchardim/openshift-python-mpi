@@ -29,7 +29,7 @@ NAME          STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 nfs-pvc-mpi   Bound    nfs-pv-mpi   2Gi        RWX                           3s
 ```
 
-Create the SSH information
+Create needed ConfigMaps and Secrets
 ```bash
 $ bash scripts/generate-mpi-configs.sh
 $ bash scripts/generate-ssh-configs.sh
@@ -62,7 +62,7 @@ Calculated pi is 3.1415404000, error is 0.0000522536
 ```
 
 
-### Run MPI/ipyparallel Job using Jypiter Notebook
+### Run MPI/ipyparallel Job using Jupyter Notebook
 
 Get project route
 ```bash
@@ -72,6 +72,7 @@ mpi-master-route   gw-learning.apps.ocp4.info.net          mpi-master-svc   <all
 ```
 
 Execute sample notebook that calculates pi in parallel against your mpi cluster deployed on Openshift.
+
 https://gw-learning.apps.ocp4.info.net/notebooks/notebooks/pi_calc/pi_calc.ipynb 
 
 ![](images/pi_notebook.png)
