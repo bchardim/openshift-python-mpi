@@ -124,8 +124,8 @@ do
     done
 
     # Run mpi cluster
-    echo "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug' [Log: .ipython/profile_mpi/log]"
-    nohup ipcluster start -n ${NP_COUNT} --profile=mpi --log-to-file --debug &
+    echo "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --debug'"
+    nohup ipcluster start -n ${NP_COUNT} --profile=mpi --debug &
 
 
 done
