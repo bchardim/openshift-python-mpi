@@ -2,7 +2,7 @@
 # FROM registry.fedoraproject.org/fedora-minimal:30
 FROM quay.io/bchardim/fedora30-python-mpi:latest
 
-RUN microdnf install -y \
+RUN microdnf install --nodocs -y \
 python3 \
 python3-notebook \
 python3-ipython \
