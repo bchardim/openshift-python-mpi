@@ -13,13 +13,12 @@ do
     HOST_FL=/home/mpi/hosts
     REPL_FL=${PROF_DIR}/replicas
     MPI_RECONFIG=0 
-    date
 
-    echo ""
-    echo "#######################################################"
-    echo "# Check if MPI cluster needs reconfiguration          #"
-    echo "#######################################################"
-    echo ""
+    
+    #######################################################
+    # Check if MPI cluster needs reconfiguration          #
+    #######################################################
+    echo "$(date) Check if MPI cluster needs reconfiguration" 
 
     # Calculate number of PODs running in mpi cluster
     touch ${HOST_FL}
@@ -35,7 +34,7 @@ do
     	if [ $(grep -c "${mpi}" ${HOST_FL}) -eq 0 ]
         then		
 	  MPI_RECONFIG=1   	
-          echo "WARNING: MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
+          echo "MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
 	fi  
     done
 
@@ -43,17 +42,17 @@ do
     if [ "${POD_COUNT}" != "${HOST_COUNT}" ]
     then
 	MPI_RECONFIG=1    
-	echo "WARNING: POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
+	echo "POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
     fi		
 
     # Check mpi cluster is running
-    mkdir -p ${PROF_DIR}/pid && touch ${MPI_PID}
+    mkdir -p ${PROF_DIR}/pid && touch ${PROF_DIR}/pid/ipcluster.pid 
     MPI_PID=$(cat ${PROF_DIR}/pid/ipcluster.pid)
     MPI_PS_PID=$(pgrep ipcluster)
     if [ "${MPI_PID}" != "${MPI_PS_PID}" ]
     then
         MPI_RECONFIG=1
-        echo "WARNING: MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
+        echo "MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
     fi
 
     # Loop control
@@ -63,12 +62,12 @@ do
 	continue
     fi	    
 
-    echo ""
-    echo "#######################################################"
-    echo "# Generating MPI config                               #"
-    echo "#######################################################"
-    echo ""
 
+    #######################################################
+    # Generating MPI config                               #
+    #######################################################
+    echo "$(date) Generating MPI config"
+    
     #
     # MPI architecture config
     #
@@ -91,11 +90,11 @@ do
     echo "Nslot/node [slot=]: ${SLOT}"
     echo "Ntask count [-np]:  ${NP_COUNT}"
 
-    echo ""
-    echo "#######################################################"
-    echo "# Reconfigure mpi cluster                             #"
-    echo "#######################################################"
-    echo ""
+
+    #######################################################
+    # Reconfigure mpi cluster                             #
+    #######################################################
+    echo "$(date) Reconfigure mpi cluster"
 
     # Grace period for deployment
     sleep ${POD_COUNT}
