@@ -71,9 +71,13 @@ NAME               HOST/PORT                        PATH   SERVICES         PORT
 mpi-master-route   gw-learning.apps.ocp4.info.net          mpi-master-svc   <all>   edge          None
 ```
 
-Navigate to sample notebook that calculates pi in parallel against mpi cluster deployed using Monte Carlo method
+Execute sample notebook that calculates pi in parallel against deployed mpi cluster using Monte Carlo method
 
 https://gw-learning.apps.ocp4.info.net/notebooks/notebooks/pi_calc/pi_calc.ipynb 
+
+![](images/pi_notebook.png)
+
+Enjoy !
 
 ## References
 https://github.com/itewk/openshift-mpi-example
