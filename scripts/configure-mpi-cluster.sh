@@ -24,9 +24,7 @@ do
     touch ${HOST_FL}
     POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
     POD_LIST=$(dig ${MPI_SVC} A +search +short | tr '\n' ',' | sed 's/.$//')
-    echo "$(date '+%F %T') [$0] Calculated POD_COUNT: '${POD_COUNT}'"
     HOST_COUNT=$(cat ${HOST_FL} | wc -l)
-    echo "$(date '+%F %T') [$0] Calculated HOST_COUNT: '${HOST_COUNT}'"
 
     # Check all mpi nodes are in host file
     for mpi in $(echo "${POD_LIST}" | tr ',' '\n')
