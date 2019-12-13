@@ -18,15 +18,15 @@ do
     #######################################################
     # Check if MPI cluster needs reconfiguration          #
     #######################################################
-    echo "$(date) Check if MPI cluster needs reconfiguration" 
+    echo "$(date '+%F %T') [$0] Check if MPI cluster needs reconfiguration" 
 
     # Calculate number of PODs running in mpi cluster
     touch ${HOST_FL}
     POD_COUNT=$(dig ${MPI_SVC} A +search +short | wc -l)
     POD_LIST=$(dig ${MPI_SVC} A +search +short | tr '\n' ',' | sed 's/.$//')
-    echo "Calculated POD_COUNT: '${POD_COUNT}'"
+    echo "$(date '+%F %T') [$0] Calculated POD_COUNT: '${POD_COUNT}'"
     HOST_COUNT=$(cat ${HOST_FL} | wc -l)
-    echo "Calculated HOST_COUNT: '${HOST_COUNT}'"
+    echo "$(date '+%F %T') [$0] Calculated HOST_COUNT: '${HOST_COUNT}'"
 
     # Check all mpi nodes are in host file
     for mpi in $(echo "${POD_LIST}" | tr ',' '\n')
@@ -34,7 +34,7 @@ do
     	if [ $(grep -c "${mpi}" ${HOST_FL}) -eq 0 ]
         then		
 	  MPI_RECONFIG=1   	
-          echo "MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
+          echo "$(date '+%F %T') [$0] MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
 	fi  
     done
 
@@ -42,7 +42,7 @@ do
     if [ "${POD_COUNT}" != "${HOST_COUNT}" ]
     then
 	MPI_RECONFIG=1    
-	echo "POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
+	echo "$(date '+%F %T') [$0] POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
     fi		
 
     # Check mpi cluster is running
@@ -52,13 +52,13 @@ do
     if [ "${MPI_PID}" != "${MPI_PS_PID}" ]
     then
         MPI_RECONFIG=1
-        echo "MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
+        echo "$(date '+%F %T') [$0] MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
     fi
 
     # Loop control
     if [ ${MPI_RECONFIG} -eq 0 ]
     then
-        echo "MPI cluster does NOT need reconfiguration."
+        echo "$(date '+%F %T') [$0] MPI cluster does NOT need reconfiguration."
 	continue
     fi	    
 
@@ -66,7 +66,7 @@ do
     #######################################################
     # Generating MPI config                               #
     #######################################################
-    echo "$(date) Generating MPI config"
+    echo "$(date '+%F %T') [$0] Generating MPI config"
     
     #
     # MPI architecture config
@@ -94,7 +94,7 @@ do
     #######################################################
     # Reconfigure mpi cluster                             #
     #######################################################
-    echo "$(date) Reconfigure mpi cluster"
+    echo "$(date '+%F %T') [$0] Reconfigure mpi cluster."
 
     # Grace period for deployment
     sleep ${POD_COUNT}
@@ -123,7 +123,7 @@ do
     done
 
     # Run mpi cluster
-    echo "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --debug'"
+    echo "$(date '+%F %T') [$0] Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --debug'"
     nohup ipcluster start -n ${NP_COUNT} --profile=mpi --debug &
 
 
