@@ -1,24 +1,44 @@
 #!/bin/bash
 
+#
+# General config
+#
+
+SNAME=$(basename -- "$0")
+CMAP_DIR=/.ipython/configmap
+PROF_DIR=/.ipython/profile_mpi
+HOST_FL=/home/mpi/hosts
+REPL_FL=${PROF_DIR}/replicas
+
+
+#
+# Functions 
+#
+
+log() {
+
+    MESG=$1
+    echo "$(date '+%F %T.%3N') [${SNAME}] ${MESG}"
+}
+
+
+#
+# Main script
+#
+
 while true    
 do
 
 
     # Initial delay
-    sleep 30
-
-    # Profile config
-    CMAP_DIR=/.ipython/configmap
-    PROF_DIR=/.ipython/profile_mpi
-    HOST_FL=/home/mpi/hosts
-    REPL_FL=${PROF_DIR}/replicas
+    sleep 60
     MPI_RECONFIG=0 
 
     
     #######################################################
     # Check if MPI cluster needs reconfiguration          #
     #######################################################
-    echo "$(date '+%F %T') [$0] Check if MPI cluster needs reconfiguration" 
+    log "Check if MPI cluster needs reconfiguration." 
 
     # Calculate number of PODs running in mpi cluster
     touch ${HOST_FL}
@@ -32,7 +52,7 @@ do
     	if [ $(grep -c "${mpi}" ${HOST_FL}) -eq 0 ]
         then		
 	  MPI_RECONFIG=1   	
-          echo "$(date '+%F %T') [$0] MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
+          log "MPI host '${mpi}' NOT found in '${HOST_FL}'. Reconfiguring mpi cluster."
 	fi  
     done
 
@@ -40,7 +60,7 @@ do
     if [ "${POD_COUNT}" != "${HOST_COUNT}" ]
     then
 	MPI_RECONFIG=1    
-	echo "$(date '+%F %T') [$0] POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
+	log "POD_COUNT: '${POD_COUNT}' != HOST_COUNT: '${HOST_COUNT}'. Reconfiguring mpi cluster."    
     fi		
 
     # Check mpi cluster is running
@@ -50,13 +70,13 @@ do
     if [ "${MPI_PID}" != "${MPI_PS_PID}" ]
     then
         MPI_RECONFIG=1
-        echo "$(date '+%F %T') [$0] MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
+        log "MPI_PID: '${MPI_PID}' != MPI_PS_PID: '${MPI_PS_PID}'. Reconfiguring mpi cluster."    
     fi
 
     # Loop control
     if [ ${MPI_RECONFIG} -eq 0 ]
     then
-        echo "$(date '+%F %T') [$0] MPI cluster does NOT need reconfiguration."
+        log "MPI cluster does NOT need reconfiguration."
 	continue
     fi	    
 
@@ -64,7 +84,7 @@ do
     #######################################################
     # Generating MPI config                               #
     #######################################################
-    echo "$(date '+%F %T') [$0] Generating MPI config"
+    log "Generating MPI cluster configuration."
     
     #
     # MPI architecture config
@@ -83,19 +103,16 @@ do
     # Calculate number of slot per node [slot=]
     SLOT=$((${MPI_POD_CPU}*${MPI_CPU_THREAD}))
 
-    echo "Pod list:           $(echo ${POD_LIST} | tr '\n' ' ')"
-    echo "Pod count:          ${POD_COUNT}"
-    echo "Nslot/node [slot=]: ${SLOT}"
-    echo "Ntask count [-np]:  ${NP_COUNT}"
+    log "Pod list:           $(echo ${POD_LIST} | tr '\n' ' ')"
+    log "Pod count:          ${POD_COUNT}"
+    log "Nslot/node [slot=]: ${SLOT}"
+    log "Ntask count [-np]:  ${NP_COUNT}"
 
 
     #######################################################
     # Reconfigure mpi cluster                             #
     #######################################################
-    echo "$(date '+%F %T') [$0] Reconfigure mpi cluster."
-
-    # Grace period for deployment
-    sleep ${POD_COUNT}
+    log "Reconfiguring MPI cluster ..."
 
     # Stop mpi cluster
     ipcluster stop --profile=mpi
@@ -121,7 +138,7 @@ do
     done
 
     # Run mpi cluster
-    echo "$(date '+%F %T') [$0] Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --debug'"
+    log "Running 'ipcluster start -n ${NP_COUNT} --profile=mpi --debug'"
     nohup ipcluster start -n ${NP_COUNT} --profile=mpi --debug &
 
 
