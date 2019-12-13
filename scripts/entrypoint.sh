@@ -58,7 +58,9 @@ then
   echo "Start sshd at master pod"
   nohup /usr/sbin/sshd &
   echo "Start jupyter-notebook at master pod" 
-  exec jupyter-notebook --ip ${container_ip} --port 8888 --no-browser --notebook-dir ${mpi_home_dir} --NotebookApp.token=''
+  nohup jupyter-notebook --ip ${container_ip} --port 8888 --no-browser --notebook-dir ${mpi_home_dir} --NotebookApp.token='' &
+  echo "Configure mpi cluster at master pod"
+  exec /configure-mpi-cluster.sh 
 else
   echo "Start sshd at mpi pod"	 
   exec /usr/sbin/sshd -D
