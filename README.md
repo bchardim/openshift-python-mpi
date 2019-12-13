@@ -64,6 +64,16 @@ Calculated pi is 3.1415404000, error is 0.0000522536
 
 ### Run MPI/ipyparallel Job using Jypiter Notebook
 
+Get project route
+```bash
+$ oc get routes
+NAME               HOST/PORT                        PATH   SERVICES         PORT    TERMINATION   WILDCARD
+mpi-master-route   gw-learning.apps.ocp4.info.net          mpi-master-svc   <all>   edge          None
+```
+
+Navigate to sample notebook that calculates pi in parallel against mpi cluster deployed using Monte Carlo method
+
+https://gw-learning.apps.ocp4.info.net/notebooks/notebooks/pi_calc/pi_calc.ipynb 
 
 ## References
 https://github.com/itewk/openshift-mpi-example
